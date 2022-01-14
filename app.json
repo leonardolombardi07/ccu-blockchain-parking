@@ -1,0 +1,25 @@
+{
+  "expo": {
+    "name": "MAALTA Blockchain Parking",
+    "slug": "maalta-blockchain-parking",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./src/assets/Logo/Logo.png",
+    "splash": {
+      "image": "./src/assets/Logo/LogoNoBackground.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#f6f6f6"
+    },
+    "updates": {
+      "fallbackToCacheTimeout": 0
+    },
+    "assetBundlePatterns": [
+      "**/*"
+    ],
+    "ios": {
+      "supportsTablet": false
+    },
+    "android": {
+    }
+  }
+}
