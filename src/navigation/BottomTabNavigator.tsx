@@ -61,9 +61,7 @@ export default function BottomTabNavigator() {
   );
 }
 
-const Icon = withTheme(IconWithTheme);
-
-function IconWithTheme({
+const Icon = withTheme(function IconWithTheme({
   theme: { colors },
   icon,
   focused,
@@ -80,4 +78,4 @@ function IconWithTheme({
       style={{ marginBottom: -5 }}
     />
   );
-}
+});
