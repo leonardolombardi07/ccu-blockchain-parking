@@ -15,33 +15,27 @@ configurations and enable foreground location`;
 export default withTheme(ParkHomeScreen);
 
 function ParkHomeScreen({ theme }: { theme: ReactNativePaper.Theme }) {
-  const [locationResponse, requestPermission] =
+  const [locationPermission, requestPermission] =
     Location.useForegroundPermissions();
+
   const [region, setRegion] = React.useState<Region | null>(null);
   const [error, setError] = React.useState("");
 
-  async function checkPermissionsAndFetchLocation() {
-    setError("");
-    try {
-      const { status, canAskAgain } = await requestPermission();
-      if (!canAskAgain) return alert(CANT_ASK_PERMISSION_AGAIN_INSTRUCTION);
-      if (status != "granted") return;
-
-      const { coords: initialUserCoords } =
-        await Location.getCurrentPositionAsync();
-      setRegion({
-        latitude: initialUserCoords.latitude,
-        longitude: initialUserCoords.longitude,
-        latitudeDelta: 0.0922,
-        longitudeDelta: 0.0421,
-      });
-    } catch (error: any) {
-      setError(error?.message || "Some unexpected error occurred");
-    }
-  }
-
   React.useEffect(function onFirstMount() {
-    checkPermissionsAndFetchLocation();
+    (async function setCurrentUserRegion() {
+      try {
+        const { coords: initialUserCoords } =
+          await Location.getCurrentPositionAsync();
+        setRegion({
+          latitude: initialUserCoords.latitude,
+          longitude: initialUserCoords.longitude,
+          latitudeDelta: 0.0922,
+          longitudeDelta: 0.0421,
+        });
+      } catch (error: any) {
+        setError(error || "Something went wrong");
+      }
+    })();
   }, []);
 
   if (error)
@@ -51,11 +45,12 @@ function ParkHomeScreen({ theme }: { theme: ReactNativePaper.Theme }) {
           Something went wrong. Press the button below to try to load the map
           again
         </Paragraph>
-        <Button onPress={checkPermissionsAndFetchLocation}>Try Again</Button>
+        <Button onPress={requestPermission}>Try Again</Button>
       </View>
     );
 
-  if (!locationResponse || !region)
+  const isLoadingPermissionsAndRegion = !locationPermission || !region;
+  if (isLoadingPermissionsAndRegion)
     return (
       <View style={styles.container}>
         <ActivityIndicator color={theme.colors.backdrop} size={40} />
@@ -65,11 +60,12 @@ function ParkHomeScreen({ theme }: { theme: ReactNativePaper.Theme }) {
       </View>
     );
 
-  const { status, canAskAgain } = locationResponse;
-  if (status != "granted") {
+  const noPermissions = locationPermission.status != "granted";
+  if (noPermissions) {
     function handlePress() {
-      if (!canAskAgain) return alert(CANT_ASK_PERMISSION_AGAIN_INSTRUCTION);
-      checkPermissionsAndFetchLocation;
+      if (!locationPermission?.canAskAgain)
+        return alert(CANT_ASK_PERMISSION_AGAIN_INSTRUCTION);
+      requestPermission();
     }
     return (
       <View style={styles.container}>
