@@ -32,6 +32,7 @@ interface SignInValues {
 
 interface SignUpValues extends SignInValues {
   name: string;
+  plate: string;
 }
 
 export function isUserSignedIn(): boolean {
@@ -42,6 +43,7 @@ export async function signUp({
   name,
   email,
   password,
+  plate,
 }: SignUpValues): Promise<User> {
   try {
     const { user: firebaseUser } = await createUserWithEmailAndPassword(
@@ -49,7 +51,7 @@ export async function signUp({
       email,
       password
     );
-    const userDoc = await createFirestoreUser(firebaseUser, { name });
+    const userDoc = await createFirestoreUser(firebaseUser, { name, plate });
     return getUser(userDoc);
   } catch (error) {
     throw error;
@@ -61,7 +63,7 @@ export async function signIn({ email, password }: SignInValues): Promise<User> {
     const { user: firebaseUser } = await signInWithEmailAndPassword(
       auth,
       email,
-      password
+      password,
     );
     return getUser(getUserDoc(firebaseUser.uid));
   } catch (error) {
@@ -93,13 +95,14 @@ export async function editUserPhotoUrl(uid: string, uri: string) {
 
 async function createFirestoreUser(
   firebaseUser: FirebaseUser,
-  fields: { name: string }
+  fields: { name: string, plate: string }
 ) {
   const userDoc = getUserDoc(firebaseUser.uid);
   await setDoc(userDoc, {
     uid: firebaseUser.uid,
     name: fields.name,
     email: firebaseUser.email,
+    plate: fields.plate,
     photoUrl: firebaseUser.photoURL,
     car: null,
     payingMethod: null,

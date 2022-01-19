@@ -1,4 +1,4 @@
-type ValidationTypes = "name" | "email" | "password";
+type ValidationTypes = "name" | "email" | "password" | "plate";
 
 export function validate<Types, ValueType>(
   type: ValidationTypes,
@@ -28,6 +28,16 @@ export function validate<Types, ValueType>(
         ? "Please provide a password"
         : value.length < 3
         ? "Please provide a password with more than 3 characters"
+        : null;
+    }
+
+    case "plate": {
+      const plateRegex =
+        /^((?:[A-Z]{2}-\d{2}-\d{2})|(?:\d{2}-[A-Z]{2}-\d{2})|(?:\d{2}-\d{2}-[A-Z]{2}))$/i;
+      return !value
+        ? "Please provide a plate number"
+        : !value.match(plateRegex) && value.length == 8
+        ? "Please provide a plate number with 8 characters"
         : null;
     }
 

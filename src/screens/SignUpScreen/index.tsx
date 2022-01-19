@@ -22,7 +22,7 @@ import * as Validation from "../../utils/Validation";
 import { StackScreenProps } from "@react-navigation/stack";
 import { AuthStackParamList } from "../../navigation";
 
-type FieldType = "name" | "email" | "password";
+type FieldType = "name" | "email" | "password" | "plate";
 
 type SignUpScreenProps = StackScreenProps<AuthStackParamList, "SignUp">;
 
@@ -31,17 +31,20 @@ export default function SignUpScreen({ navigation }: SignUpScreenProps) {
   const nameRef = React.useRef<NativeTextInput>(null);
   const emailRef = React.useRef<NativeTextInput>(null);
   const passwordRef = React.useRef<NativeTextInput>(null);
+  const plateRef = React.useRef<NativeTextInput>(null);
 
   const [values, setValues] = React.useState({
     name: "",
     email: "",
     password: "",
+    plate: "",
   });
 
   const [errors, setErrors] = React.useState({
     name: "",
     email: "",
     password: "",
+    plate: "",
   });
 
   function handleChange(newValue: string, type: FieldType) {
@@ -64,6 +67,8 @@ export default function SignUpScreen({ navigation }: SignUpScreenProps) {
     if (emailError) return emailRef.current?.focus();
     const passwordError = Validation.validate("password", values.password);
     if (passwordError) return passwordRef.current?.focus();
+    const plateError = Validation.validate("plate", values.plate);
+    if (plateError) return plateRef.current?.focus();
     setIsSnackbarVisible(false);
     setIsSubmiting(true);
     try {
@@ -71,6 +76,7 @@ export default function SignUpScreen({ navigation }: SignUpScreenProps) {
         name: values.name,
         email: values.email,
         password: values.password,
+        plate: values.plate,
       });
       dispatch({ type: "SIGN_IN", payload: user });
       AuthStorage.saveUser(user);
@@ -86,6 +92,7 @@ export default function SignUpScreen({ navigation }: SignUpScreenProps) {
     name: Boolean(hasSubmitted && errors.name),
     email: Boolean(hasSubmitted && errors.email),
     password: Boolean(hasSubmitted && errors.password),
+    plate: Boolean(hasSubmitted && errors.plate),
   };
 
   const hasErrors = Object.values(showError).find((e) => e == true);
@@ -127,6 +134,18 @@ export default function SignUpScreen({ navigation }: SignUpScreenProps) {
       <HelperText type="error">
         {showError.password && errors.password}
       </HelperText>
+
+      <TextInput
+        ref={plateRef}
+        label={"plate"}
+        keyboardType="default"
+        autoCapitalize="none"
+        value={values.plate}
+        error={showError.plate}
+        onChangeText={(newPlate) => handleChange(newPlate, "plate")}
+        onSubmitEditing={() => passwordRef.current?.focus()}
+      />
+      <HelperText type="error">{showError.plate && errors.plate}</HelperText>
 
       <Button
         mode="contained"
