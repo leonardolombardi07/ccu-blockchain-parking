@@ -22,7 +22,7 @@ function ParkHomeScreen({ theme }: { theme: ReactNativePaper.Theme }) {
   const [error, setError] = React.useState("");
 
   React.useEffect(function onFirstMount() {
-    (async function setCurrentUserRegion() {
+    (async function setRegionToCurrentUserRegion() {
       try {
         const { coords: initialUserCoords } =
           await Location.getCurrentPositionAsync();
