@@ -3,13 +3,15 @@ export type AuthStackParamList = {
   SignUp: undefined;
 };
 
-export type HomeStackParamList = {
-  Home: undefined;
+export type ParkStackParamList = {
+  ParkHome: undefined;
+};
+
+export type ProfileStackParamList = {
+  Profile: undefined;
 };
 
 export type BottomTabsParamList = {
-  Home: undefined;
-  Search: undefined;
-  Scan: undefined;
-  Profile: undefined;
+  ParkStack: undefined;
+  ProfileStack: undefined;
 };

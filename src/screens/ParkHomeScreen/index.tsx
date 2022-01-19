@@ -7,21 +7,14 @@ import MapView, { Region } from "react-native-maps";
 import * as Location from "expo-location";
 // Constants
 import { Window } from "../../constants/Dimensions";
-// Types
-import { BottomTabScreenProps } from "@react-navigation/bottom-tabs";
-import { BottomTabsParamList } from "../../navigation";
-
-type HomeScreenProps = BottomTabScreenProps<BottomTabsParamList, "Home"> & {
-  theme: ReactNativePaper.Theme;
-};
 
 const CANT_ASK_PERMISSION_AGAIN_INSTRUCTION = `You denied the app to
 ask for location permissions. To enable permissions, go to app
 configurations and enable foreground location`;
 
-export default withTheme(HomeScreen);
+export default withTheme(ParkHomeScreen);
 
-function HomeScreen({ theme }: HomeScreenProps) {
+function ParkHomeScreen({ theme }: { theme: ReactNativePaper.Theme }) {
   const [locationResponse, requestPermission] =
     Location.useForegroundPermissions();
   const [region, setRegion] = React.useState<Region | null>(null);
@@ -51,16 +44,6 @@ function HomeScreen({ theme }: HomeScreenProps) {
     checkPermissionsAndFetchLocation();
   }, []);
 
-  if (!locationResponse || !region)
-    return (
-      <View style={styles.container}>
-        <ActivityIndicator color={theme.colors.backdrop} size={40} />
-        <HelperText type="info" style={{ marginTop: 5 }}>
-          Loading Map
-        </HelperText>
-      </View>
-    );
-
   if (error)
     return (
       <View style={styles.container}>
@@ -69,6 +52,16 @@ function HomeScreen({ theme }: HomeScreenProps) {
           again
         </Paragraph>
         <Button onPress={checkPermissionsAndFetchLocation}>Try Again</Button>
+      </View>
+    );
+
+  if (!locationResponse || !region)
+    return (
+      <View style={styles.container}>
+        <ActivityIndicator color={theme.colors.backdrop} size={40} />
+        <HelperText type="info" style={{ marginTop: 5 }}>
+          Loading Map
+        </HelperText>
       </View>
     );
 
@@ -85,15 +78,11 @@ function HomeScreen({ theme }: HomeScreenProps) {
     );
   }
 
-  function handleChange(r: Region) {
-    setRegion(r);
-  }
-
   return (
     <View style={styles.container}>
       <MapView
         region={region}
-        onRegionChangeComplete={handleChange}
+        onRegionChangeComplete={setRegion}
         style={styles.map}
       />
     </View>
