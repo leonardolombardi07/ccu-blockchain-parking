@@ -63,7 +63,7 @@ export async function signIn({ email, password }: SignInValues): Promise<User> {
     const { user: firebaseUser } = await signInWithEmailAndPassword(
       auth,
       email,
-      password,
+      password
     );
     return getUser(getUserDoc(firebaseUser.uid));
   } catch (error) {
@@ -95,7 +95,7 @@ export async function editUserPhotoUrl(uid: string, uri: string) {
 
 async function createFirestoreUser(
   firebaseUser: FirebaseUser,
-  fields: { name: string, plate: string }
+  fields: { name: string; plate: string }
 ) {
   const userDoc = getUserDoc(firebaseUser.uid);
   await setDoc(userDoc, {
