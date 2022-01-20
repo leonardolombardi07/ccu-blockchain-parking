@@ -1,5 +1,5 @@
 // Components
-import { View, StyleSheet, FlatList } from "react-native";
+import { View, StyleSheet, FlatList, StatusBar } from "react-native";
 import {
   Button,
   HelperText,
@@ -109,7 +109,7 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: "center",
     justifyContent: "center",
-    paddingTop: 15,
+    paddingTop: StatusBar.currentHeight ? StatusBar.currentHeight + 5 : 25,
   },
   searchBar: {
     width: Window.width(90),
