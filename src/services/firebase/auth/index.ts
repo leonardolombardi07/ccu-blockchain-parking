@@ -104,9 +104,6 @@ async function createFirestoreUser(
     email: firebaseUser.email,
     plate: fields.plate,
     photoUrl: firebaseUser.photoURL,
-    car: null,
-    payingMethod: null,
-    parkingStatus: null,
   });
   return userDoc;
 }

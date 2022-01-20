@@ -7,9 +7,10 @@ import Field from "./Field";
 import EditFieldModal from "./EditFieldModal";
 // Hooks
 import { useAuth } from "../../context/auth";
-import { User } from "../../types";
 // Services
 import * as AuthStorage from "../../services/storage/auth";
+// Types
+import { User } from "../../types";
 
 export default withTheme(ProfileScreen);
 
@@ -46,9 +47,9 @@ function ProfileScreen({ theme }: { theme: ReactNativePaper.Theme }) {
             editable={false}
           />
           <Field
-            label="Car Model"
-            value={user?.car || "-"}
-            onEdit={() => openModal("Car Model", user?.car || "", "car")}
+            label="Car Plate"
+            value={user?.plate || "-"}
+            onEdit={() => openModal("Car Model", user?.plate || "", "plate")}
           />
         </View>
       </View>
