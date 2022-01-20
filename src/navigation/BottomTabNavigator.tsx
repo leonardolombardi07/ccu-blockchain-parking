@@ -1,59 +1,50 @@
 import * as React from "react";
 // Navigation
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+import { createStackNavigator } from "@react-navigation/stack";
+// Context
+import { useParking } from "../context/parking";
 // Screens
 import {
-  HomeScreen,
-  SearchScreen,
-  ScanScreen,
+  MapSearchScreen,
+  OngoingParkingScreen,
+  ValidateStartParkingScreen,
+  ValidateFinishParkingScreen,
   ProfileScreen,
+  SearchByQueryScreen,
 } from "../screens";
 // Components
 import { IconButton as PaperIcon, withTheme } from "react-native-paper";
 // Types
-import { BottomTabsParamList } from "./types";
+import {
+  BottomTabsParamList,
+  ParkStackParamList,
+  ProfileStackParamList,
+} from "./types";
+import * as StatusBar from "expo-status-bar";
 
 const BottomTab = createBottomTabNavigator<BottomTabsParamList>();
-
 export default function BottomTabNavigator() {
   return (
     <BottomTab.Navigator
-      screenOptions={{ tabBarLabel: "", headerShown: false }}
+      screenOptions={{ headerShown: false, tabBarLabel: "" }}
     >
       <BottomTab.Screen
-        name="Home"
-        component={HomeScreen}
-        options={{
-          tabBarIcon: ({ focused }) => <Icon icon="home" focused={focused} />,
-        }}
-      />
-
-      <BottomTab.Screen
-        name="Search"
-        component={SearchScreen}
+        name="ParkStack"
+        component={ParkStackNavigator}
         options={{
           tabBarIcon: ({ focused }) => (
-            <Icon icon="magnify" focused={focused} />
+            <BottomTabIcon icon="map-marker" focused={focused} />
           ),
         }}
       />
 
       <BottomTab.Screen
-        name="Scan"
-        component={ScanScreen}
+        name="ProfileStack"
+        component={ProfileStackNavigator}
         options={{
           tabBarIcon: ({ focused }) => (
-            <Icon icon="qrcode-scan" focused={focused} />
-          ),
-        }}
-      />
-
-      <BottomTab.Screen
-        name="Profile"
-        component={ProfileScreen}
-        options={{
-          tabBarIcon: ({ focused }) => (
-            <Icon icon="account" focused={focused} />
+            <BottomTabIcon icon="account" focused={focused} />
           ),
         }}
       />
@@ -61,9 +52,48 @@ export default function BottomTabNavigator() {
   );
 }
 
-const Icon = withTheme(IconWithTheme);
+const ParkStack = createStackNavigator<ParkStackParamList>();
+function ParkStackNavigator() {
+  const {
+    state: { ongoingParking },
+  } = useParking();
 
-function IconWithTheme({
+  return (
+    <ParkStack.Navigator screenOptions={{ headerShown: false }}>
+      <ParkStack.Screen name={"MapSearch"} component={MapSearchScreen} />
+
+      <ParkStack.Screen
+        name={"OngoingParking"}
+        component={OngoingParkingScreen}
+      />
+
+      <ParkStack.Screen
+        name={"SearchByQuery"}
+        component={SearchByQueryScreen}
+      />
+
+      <ParkStack.Screen
+        name="ValidateStartParking"
+        component={ValidateStartParkingScreen}
+      />
+      <ParkStack.Screen
+        name="ValidateFinishParking"
+        component={ValidateFinishParkingScreen}
+      />
+    </ParkStack.Navigator>
+  );
+}
+
+const ProfileStack = createStackNavigator<ProfileStackParamList>();
+function ProfileStackNavigator() {
+  return (
+    <ProfileStack.Navigator screenOptions={{ headerShown: false }}>
+      <ProfileStack.Screen name="Profile" component={ProfileScreen} />
+    </ProfileStack.Navigator>
+  );
+}
+
+const BottomTabIcon = withTheme(function IconWithTheme({
   theme: { colors },
   icon,
   focused,
@@ -77,7 +107,7 @@ function IconWithTheme({
       icon={icon}
       color={focused ? colors.primary : colors.backdrop}
       size={28}
-      style={{ marginBottom: -5 }}
+      style={{ marginBottom: -6 }}
     />
   );
-}
+});

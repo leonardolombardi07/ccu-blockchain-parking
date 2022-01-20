@@ -2,6 +2,7 @@ import * as React from "react";
 // Components
 import { View, Alert, StyleSheet } from "react-native";
 import { Button, withTheme } from "react-native-paper";
+import Header from "./Header";
 import Field from "./Field";
 import EditFieldModal from "./EditFieldModal";
 // Hooks
@@ -9,7 +10,6 @@ import { useAuth } from "../../context/auth";
 import { User } from "../../types";
 // Services
 import * as AuthStorage from "../../services/storage/auth";
-import Header from "./Header";
 
 export default withTheme(ProfileScreen);
 
@@ -30,7 +30,6 @@ function ProfileScreen({ theme }: { theme: ReactNativePaper.Theme }) {
     setFieldName(fieldName);
   }
 
-  const { colors } = theme;
   return (
     <View style={styles.screenContainer}>
       <View style={styles.content}>
@@ -50,17 +49,6 @@ function ProfileScreen({ theme }: { theme: ReactNativePaper.Theme }) {
             label="Car Model"
             value={user?.car || "-"}
             onEdit={() => openModal("Car Model", user?.car || "", "car")}
-          />
-          <Field
-            label="Payment Method"
-            value={user?.payingMethod || "-"}
-            onEdit={() =>
-              openModal(
-                "Payment Method",
-                user?.payingMethod || "",
-                "payingMethod"
-              )
-            }
           />
         </View>
       </View>
@@ -103,9 +91,6 @@ function SignOutButton({ color }: { color: string }) {
 const styles = StyleSheet.create({
   screenContainer: {
     flex: 1,
-    padding: 10,
-    alignItems: "center",
-    justifyContent: "center",
   },
   content: {
     width: "100%",
