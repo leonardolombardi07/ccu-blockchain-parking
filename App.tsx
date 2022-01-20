@@ -1,11 +1,11 @@
 import React from "react";
 // Providers
-import {
-  Provider as PaperProvider,
-  DefaultTheme as DefaultPaperTheme,
-  Colors,
-} from "react-native-paper";
+import { Provider as PaperProvider } from "react-native-paper";
 import { AuthProvider } from "./src/context/auth";
+import { ParkingProvider } from "./src/context/parking";
+// Constants
+import { DefaultTheme as DefaultPaperTheme, Colors } from "react-native-paper";
+
 // Components
 import SplashScreenManager from "./src/SplashScreenManager";
 // Services
@@ -24,9 +24,11 @@ const Theme = {
 export default function App() {
   return (
     <AuthProvider>
-      <PaperProvider theme={Theme}>
-        <SplashScreenManager />
-      </PaperProvider>
+      <ParkingProvider>
+        <PaperProvider theme={Theme}>
+          <SplashScreenManager />
+        </PaperProvider>
+      </ParkingProvider>
     </AuthProvider>
   );
 }
