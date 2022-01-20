@@ -49,7 +49,7 @@ function ProfileScreen({ theme }: { theme: ReactNativePaper.Theme }) {
           <Field
             label="Car Plate"
             value={user?.plate || "-"}
-            onEdit={() => openModal("Car Model", user?.plate || "", "plate")}
+            onEdit={() => openModal("Car Plarte", user?.plate || "", "plate")}
           />
         </View>
       </View>
