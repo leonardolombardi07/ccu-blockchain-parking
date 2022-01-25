@@ -93,13 +93,7 @@ export default function Header({ theme, onEditName }: HeaderProps) {
   const { colors } = theme;
   return (
     <React.Fragment>
-      <View
-        style={[
-          styles.container,
-          styles.shadow,
-          { backgroundColor: colors.surface },
-        ]}
-      >
+      <View style={[styles.container, { backgroundColor: colors.surface }]}>
         <TouchableOpacity onPress={() => openModal()}>
           <Avatar />
           <IconButton
@@ -168,16 +162,6 @@ const styles = StyleSheet.create({
     height: "25%",
     borderTopLeftRadius: 10,
     borderTopRightRadius: 10,
-  },
-  shadow: {
-    shadowColor: "#000000",
-    shadowOffset: {
-      width: 0,
-      height: 6,
-    },
-    shadowOpacity: 0.39,
-    shadowRadius: 8.3,
-    elevation: 13,
   },
   avatar: {
     marginRight: 20,

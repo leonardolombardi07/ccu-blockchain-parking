@@ -103,6 +103,7 @@ export default withTheme(function MapSearchScreen({
           value={""}
           editable={false}
           placeholder="Enter your destination here..."
+          style={{ backgroundColor: theme.colors.surface }}
         />
       </TouchableOpacity>
 

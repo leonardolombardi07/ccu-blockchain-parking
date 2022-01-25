@@ -19,7 +19,6 @@ const Theme = {
     ...DefaultPaperTheme.colors,
     background: Colors.white,
     primary: "#66778D",
-    accent: Colors.white,
   },
 };
 
