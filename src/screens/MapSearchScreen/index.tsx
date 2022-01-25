@@ -116,7 +116,7 @@ export default withTheme(function MapSearchScreen({
       </MapView>
 
       <View
-        style={[styles.focusIcon, { backgroundColor: theme.colors.accent }]}
+        style={[styles.focusIcon, { backgroundColor: theme.colors.primary }]}
       >
         <IconButton
           icon="crosshairs-gps"

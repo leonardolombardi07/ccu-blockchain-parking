@@ -2,8 +2,6 @@ import * as React from "react";
 // Navigation
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { createStackNavigator } from "@react-navigation/stack";
-// Context
-import { useParking } from "../context/parking";
 // Screens
 import {
   MapSearchScreen,
@@ -21,13 +19,16 @@ import {
   ParkStackParamList,
   ProfileStackParamList,
 } from "./types";
-import * as StatusBar from "expo-status-bar";
 
 const BottomTab = createBottomTabNavigator<BottomTabsParamList>();
-export default function BottomTabNavigator() {
+export default withTheme(function BottomTabNavigator({ theme }) {
   return (
     <BottomTab.Navigator
-      screenOptions={{ headerShown: false, tabBarLabel: "" }}
+      screenOptions={{
+        headerShown: false,
+        tabBarLabel: "",
+        tabBarStyle: { backgroundColor: theme.colors.primary },
+      }}
     >
       <BottomTab.Screen
         name="ParkStack"
@@ -50,14 +51,10 @@ export default function BottomTabNavigator() {
       />
     </BottomTab.Navigator>
   );
-}
+});
 
 const ParkStack = createStackNavigator<ParkStackParamList>();
 function ParkStackNavigator() {
-  const {
-    state: { ongoingParking },
-  } = useParking();
-
   return (
     <ParkStack.Navigator screenOptions={{ headerShown: false }}>
       <ParkStack.Screen name={"MapSearch"} component={MapSearchScreen} />
@@ -105,7 +102,7 @@ const BottomTabIcon = withTheme(function IconWithTheme({
   return (
     <PaperIcon
       icon={icon}
-      color={focused ? colors.primary : colors.backdrop}
+      color={focused ? colors.surface : colors.backdrop}
       size={28}
       style={{ marginBottom: -6 }}
     />

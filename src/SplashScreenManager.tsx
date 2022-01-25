@@ -7,12 +7,13 @@ import { Navigator } from "./navigation";
 import * as SplashScreen from "expo-splash-screen";
 import * as AuthStorage from "./services/storage/auth";
 import * as Firebase from "./services/firebase";
+import { withTheme } from "react-native-paper";
 
-export default function SplashScreenManager() {
+export default withTheme(function SplashScreenManager({ theme }) {
   const { isShowingSplashScreen } = useSplashScreenWhileLoadingResources();
   if (isShowingSplashScreen) return null;
-  return <Navigator />;
-}
+  return <Navigator theme={theme} />;
+});
 
 function useSplashScreenWhileLoadingResources() {
   const [isShowingSplashScreen, setIsShowingSplashScreen] =
