@@ -5,7 +5,6 @@ import { AuthProvider } from "./src/context/auth";
 import { ParkingProvider } from "./src/context/parking";
 // Constants
 import { DefaultTheme as DefaultPaperTheme, Colors } from "react-native-paper";
-
 // Components
 import SplashScreenManager from "./src/SplashScreenManager";
 // Services

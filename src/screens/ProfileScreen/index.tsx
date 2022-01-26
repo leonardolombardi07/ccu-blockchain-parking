@@ -1,106 +1,29 @@
 import * as React from "react";
 // Components
-import { View, Alert, StyleSheet } from "react-native";
-import { Button, withTheme } from "react-native-paper";
-import Header from "./Header";
-import Field from "./Field";
-import EditFieldModal from "./EditFieldModal";
+import ProfileAuthenticatedScreen from "./ProfileAuthenticated";
+import ProfileUnauthenticatedScreen from "./ProfileUnauthenticated";
+import { withTheme } from "react-native-paper";
 // Hooks
 import { useAuth } from "../../context/auth";
-// Services
-import * as AuthStorage from "../../services/storage/auth";
 // Types
-import { User } from "../../types";
+import { StackScreenProps } from "@react-navigation/stack";
+import { MainStackParamList, ProfileStackParamList } from "../../navigation";
 
-export default withTheme(ProfileScreen);
+export type ProfileScreenProps = StackScreenProps<
+  MainStackParamList & ProfileStackParamList,
+  "SignIn" | "SignUp" | "MyParkings"
+> & {
+  theme: ReactNativePaper.Theme;
+};
 
-function ProfileScreen({ theme }: { theme: ReactNativePaper.Theme }) {
+export default withTheme(function ProfileScreen(props: ProfileScreenProps) {
   const {
-    state: { user },
+    state: { isAuthenticated },
   } = useAuth();
 
-  const [isVisible, setIsVisible] = React.useState(false);
-  const [label, setLabel] = React.useState("E-mail");
-  const [value, setValue] = React.useState<string>(user?.email || "");
-  const [fieldName, setFieldName] = React.useState<keyof User>("email");
-
-  function openModal(label: string, value: string, fieldName: keyof User) {
-    setIsVisible((v) => !v);
-    setLabel(label);
-    setValue(value);
-    setFieldName(fieldName);
+  if (isAuthenticated) {
+    return <ProfileAuthenticatedScreen {...props} />;
+  } else {
+    return <ProfileUnauthenticatedScreen {...props} />;
   }
-
-  return (
-    <View style={styles.screenContainer}>
-      <View style={styles.content}>
-        <Header
-          theme={theme}
-          onEditName={() => openModal("Name", user?.name || "", "name")}
-        />
-
-        <View style={styles.fieldsContainer}>
-          <Field
-            label="E-mail"
-            value={user?.email || "-"}
-            onEdit={() => openModal("E-mail", user?.email || "", "email")}
-            editable={false}
-          />
-          <Field
-            label="Car Plate"
-            value={user?.plate || "-"}
-            onEdit={() => openModal("Car Plarte", user?.plate || "", "plate")}
-          />
-        </View>
-      </View>
-
-      <EditFieldModal
-        isVisible={isVisible}
-        label={label}
-        value={value}
-        fieldName={fieldName}
-        dismiss={() => setIsVisible(false)}
-      />
-
-      <SignOutButton color={theme.colors.error} />
-    </View>
-  );
-}
-
-function SignOutButton({ color }: { color: string }) {
-  const { dispatch } = useAuth();
-
-  function signOut() {
-    dispatch({ type: "SIGN_OUT" });
-    AuthStorage.removeUser();
-  }
-
-  function handlePress() {
-    Alert.alert("Are you sure you want to sign out?", "", [
-      { text: "Cancel", style: "cancel" },
-      { text: "Yes", onPress: signOut },
-    ]);
-  }
-
-  return (
-    <Button color={color} onPress={handlePress}>
-      Sign Out
-    </Button>
-  );
-}
-
-const styles = StyleSheet.create({
-  screenContainer: {
-    flex: 1,
-  },
-  content: {
-    width: "100%",
-    height: "90%",
-  },
-  fieldsContainer: {
-    paddingVertical: 15,
-    height: "75%",
-    borderBottomRightRadius: 10,
-    borderBottomLeftRadius: 10,
-  },
 });

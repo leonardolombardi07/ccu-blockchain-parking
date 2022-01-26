@@ -1,24 +1,24 @@
 import { Region } from "react-native-maps";
 import { ParkingSpot } from "../screens/MapSearchScreen/mockParkingApi";
 
-export type AuthStackParamList = {
+export type MainStackParamList = {
+  BottomTab: undefined;
   SignIn: undefined;
   SignUp: undefined;
 };
 
-export type BottomTabsParamList = {
+export type BottomTabParamList = {
   ParkStack: undefined;
   ProfileStack: undefined;
 };
 
 export type ParkStackParamList = {
   MapSearch: undefined;
-  ValidateStartParking: { parkingSpot: ParkingSpot };
-  ValidateFinishParking: undefined;
-  OngoingParking: undefined;
+  Checkout: { parkingSpot: ParkingSpot };
   SearchByQuery: { mapRegion: Region };
 };
 
 export type ProfileStackParamList = {
   Profile: undefined;
+  MyParkings: undefined;
 };

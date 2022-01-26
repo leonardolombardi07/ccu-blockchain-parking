@@ -5,29 +5,29 @@ import { createStackNavigator } from "@react-navigation/stack";
 // Screens
 import {
   MapSearchScreen,
-  OngoingParkingScreen,
-  ValidateStartParkingScreen,
-  ValidateFinishParkingScreen,
-  ProfileScreen,
+  CheckoutScreen,
   SearchByQueryScreen,
+  ProfileScreen,
+  MyParkingsScreen,
 } from "../screens";
 // Components
 import { IconButton as PaperIcon, withTheme } from "react-native-paper";
 // Types
 import {
-  BottomTabsParamList,
+  BottomTabParamList,
   ParkStackParamList,
   ProfileStackParamList,
 } from "./types";
 
-const BottomTab = createBottomTabNavigator<BottomTabsParamList>();
+const BottomTab = createBottomTabNavigator<BottomTabParamList>();
 export default withTheme(function BottomTabNavigator({ theme }) {
   return (
     <BottomTab.Navigator
       screenOptions={{
-        headerShown: false,
         tabBarLabel: "",
+        headerShown: false,
         tabBarStyle: { backgroundColor: theme.colors.primary },
+        tabBarHideOnKeyboard: true,
       }}
     >
       <BottomTab.Screen
@@ -60,22 +60,14 @@ function ParkStackNavigator() {
       <ParkStack.Screen name={"MapSearch"} component={MapSearchScreen} />
 
       <ParkStack.Screen
-        name={"OngoingParking"}
-        component={OngoingParkingScreen}
-      />
-
-      <ParkStack.Screen
         name={"SearchByQuery"}
         component={SearchByQueryScreen}
       />
 
       <ParkStack.Screen
-        name="ValidateStartParking"
-        component={ValidateStartParkingScreen}
-      />
-      <ParkStack.Screen
-        name="ValidateFinishParking"
-        component={ValidateFinishParkingScreen}
+        name="Checkout"
+        component={CheckoutScreen}
+        options={{ headerShown: true }}
       />
     </ParkStack.Navigator>
   );
@@ -86,6 +78,11 @@ function ProfileStackNavigator() {
   return (
     <ProfileStack.Navigator screenOptions={{ headerShown: false }}>
       <ProfileStack.Screen name="Profile" component={ProfileScreen} />
+      <ProfileStack.Screen
+        name="MyParkings"
+        component={MyParkingsScreen}
+        options={{ headerShown: true, title: "Previous Parkings" }}
+      />
     </ProfileStack.Navigator>
   );
 }

@@ -22,11 +22,11 @@ import { Window } from "../../constants/Dimensions";
 import * as Validation from "../../utils/Validation";
 // Types
 import { StackScreenProps } from "@react-navigation/stack";
-import { AuthStackParamList } from "../../navigation";
+import { MainStackParamList } from "../../navigation";
 
 type InputType = "email" | "password";
 
-type SignInScreenProps = StackScreenProps<AuthStackParamList, "SignIn">;
+type SignInScreenProps = StackScreenProps<MainStackParamList, "SignIn">;
 
 export default function SignInScreen({ navigation }: SignInScreenProps) {
   const isMounted = useIsMounted();
@@ -70,6 +70,7 @@ export default function SignInScreen({ navigation }: SignInScreenProps) {
       });
       dispatch({ type: "SIGN_IN", payload: user });
       AuthStorage.saveUser(user);
+      navigation.goBack();
     } catch (error: any) {
       setSubmitError(error?.message || "Something went Wrong");
       setIsSnackbarVisible(true);

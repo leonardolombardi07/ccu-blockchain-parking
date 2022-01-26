@@ -7,9 +7,8 @@ export { default as SignUpScreen } from "./SignUpScreen";
 // Park
 export { default as MapSearchScreen } from "./MapSearchScreen";
 export { default as SearchByQueryScreen } from "./SearchByQueryScreen";
-export { default as OngoingParkingScreen } from "./OngoingParkingScreen";
-export { default as ValidateStartParkingScreen } from "./ValidateStartParkingScreen";
-export { default as ValidateFinishParkingScreen } from "./ValidateFinishParkingScreen";
+export { default as CheckoutScreen } from "./CheckoutScreen";
 
 // Profile
 export { default as ProfileScreen } from "./ProfileScreen";
+export { default as MyParkingsScreen } from "./MyParkingsScreen";

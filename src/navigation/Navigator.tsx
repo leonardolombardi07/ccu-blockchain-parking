@@ -1,23 +1,40 @@
-// Hooks
-import { useAuth } from "../context/auth";
 // Navigation
 import {
   NavigationContainer,
   NavigationContainerProps,
   Theme,
 } from "@react-navigation/native";
+import { createStackNavigator } from "@react-navigation/stack";
+// Components
 import BottomTabNavigator from "./BottomTabNavigator";
-import AuthStackNavigator from "./AuthStackNavigator";
+// Screens
+import { SignInScreen, SignUpScreen } from "../screens";
+// Types
+import { MainStackParamList } from "./types";
 
 interface NavigatorProps extends Omit<NavigationContainerProps, "children"> {
   theme: ReactNativePaper.Theme;
 }
 
+const MainStack = createStackNavigator<MainStackParamList>();
 export default function Navigator(props: NavigatorProps) {
-  const { state } = useAuth();
   return (
     <NavigationContainer {...props} theme={getNavigationTheme(props.theme)}>
-      {state?.isAuthenticated ? <BottomTabNavigator /> : <AuthStackNavigator />}
+      <MainStack.Navigator
+        screenOptions={{
+          headerTitle: "",
+          headerStyle: { backgroundColor: "transparent" },
+          headerShadowVisible: false,
+        }}
+      >
+        <MainStack.Screen
+          name="BottomTab"
+          component={BottomTabNavigator}
+          options={{ headerShown: false }}
+        />
+        <MainStack.Screen name="SignIn" component={SignInScreen} />
+        <MainStack.Screen name="SignUp" component={SignUpScreen} />
+      </MainStack.Navigator>
     </NavigationContainer>
   );
 }
@@ -28,7 +45,7 @@ function getNavigationTheme(theme: ReactNativePaper.Theme): Theme {
     colors: {
       background: theme.colors.background,
       border: theme.colors.onSurface,
-      card: theme.colors.accent,
+      card: theme.colors.onSurface,
       primary: theme.colors.primary,
       notification: theme.colors.notification,
       text: theme.colors.text,

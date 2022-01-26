@@ -1,25 +1,29 @@
 // Components
 import { StyleSheet } from "react-native";
-import { Card, Title, Paragraph } from "react-native-paper";
+import { Card, Title, Paragraph, withTheme } from "react-native-paper";
 // Constants
 import { Window } from "../../constants/Dimensions";
 // Types
 import { ParkingSpot } from "../../screens/MapSearchScreen/mockParkingApi";
 
 interface ParkingSpotCardProps {
+  theme: ReactNativePaper.Theme;
   spot: ParkingSpot;
   children?: React.ReactNode;
   style?: any; // FIX
 }
 
-export default function ParkingSpotCard({
+export default withTheme(function ParkingSpotCard({
   children,
+  theme,
   spot,
   style,
 }: ParkingSpotCardProps) {
   const { title, price, distance, photos } = spot;
   return (
-    <Card style={[styles.content, style]}>
+    <Card
+      style={[styles.content, { backgroundColor: theme.colors.surface }, style]}
+    >
       <Card.Content>
         <Title>{title || "-"}</Title>
         <Paragraph>{`Price: ${
@@ -37,7 +41,7 @@ export default function ParkingSpotCard({
       {children}
     </Card>
   );
-}
+});
 
 const styles = StyleSheet.create({
   content: {

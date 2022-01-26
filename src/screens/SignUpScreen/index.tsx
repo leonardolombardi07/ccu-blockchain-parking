@@ -20,11 +20,11 @@ import * as AuthStorage from "../../services/storage/auth";
 import * as Validation from "../../utils/Validation";
 // Types
 import { StackScreenProps } from "@react-navigation/stack";
-import { AuthStackParamList } from "../../navigation";
+import { MainStackParamList } from "../../navigation";
 
 type FieldType = "name" | "email" | "password" | "plate";
 
-type SignUpScreenProps = StackScreenProps<AuthStackParamList, "SignUp">;
+type SignUpScreenProps = StackScreenProps<MainStackParamList, "SignUp">;
 
 export default function SignUpScreen({ navigation }: SignUpScreenProps) {
   const isMounted = useIsMounted();
@@ -80,6 +80,7 @@ export default function SignUpScreen({ navigation }: SignUpScreenProps) {
       });
       dispatch({ type: "SIGN_IN", payload: user });
       AuthStorage.saveUser(user);
+      navigation.navigate("BottomTab");
     } catch (error: any) {
       setSubmitError(error?.message || "Something went Wrong");
       setIsSnackbarVisible(true);

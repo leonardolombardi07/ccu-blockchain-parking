@@ -29,7 +29,7 @@ export default function ParkingSpotModal({
 
   function handlePressPark() {
     if (!selectedSpot) return; // This won't happen but we should do it for typescript anyway
-    navigation.navigate("ValidateStartParking", {
+    navigation.navigate("Checkout", {
       parkingSpot: selectedSpot,
     });
   }
@@ -46,14 +46,17 @@ export default function ParkingSpotModal({
       </TouchableWithoutFeedback>
 
       <ParkingSpotCard spot={selectedSpot}>
-        <Card.Actions style={{ justifyContent: "center", marginBottom: 10 }}>
+        <Card.Actions style={{ marginBottom: 10, paddingHorizontal: 20 }}>
+          <Button mode="text" onPress={closeModal} style={{ marginRight: 10 }}>
+            Close
+          </Button>
+
           <Button
-            style={{ width: Window.width(90) }}
             mode="contained"
             color={Colors.green500}
             onPress={handlePressPark}
           >
-            Park the Car
+            Proceed to Checkout
           </Button>
         </Card.Actions>
       </ParkingSpotCard>
