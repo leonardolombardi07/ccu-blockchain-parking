@@ -1,0 +1,242 @@
+import * as React from "react";
+// Components
+import { View, StyleSheet } from "react-native";
+import {
+  Surface,
+  Text,
+  Caption,
+  Headline,
+  useTheme,
+  Button,
+  Colors,
+  Snackbar,
+} from "react-native-paper";
+import BottomSheet from "reanimated-bottom-sheet";
+import { DragHint, DateTimePickerInput } from "../../components";
+// Context
+import { useParking } from "../../context/parking";
+// Constants
+import { Window } from "../../constants/Dimensions";
+import { useBottomTabBarHeight } from "@react-navigation/bottom-tabs";
+// Utils
+import * as DateUtil from "../../utils/Date";
+// Types
+import { ParkingSpot } from "../MapSearchScreen/mockParkingApi";
+
+interface ParkingInfoViewProps {
+  spot: ParkingSpot | null;
+  startingDate: Date;
+  endingDate: Date;
+  onChangeEndingDate: (newDate: Date) => void;
+  theme: ReactNativePaper.Theme;
+}
+
+export default function OngoingParkingModal() {
+  const theme = useTheme();
+  const bottomTabHeight = useBottomTabBarHeight();
+
+  const [isSubmiting, setIsSubmiting] = React.useState(false);
+  const [submitError, setSubmitError] = React.useState("");
+  const {
+    state: { ongoingParking },
+    dispatch,
+  } = useParking();
+
+  async function handlePay() {
+    setIsSubmiting(true);
+    setSubmitError("");
+    try {
+      await MockPayment.pay();
+      dispatch({ type: "SET_ONGOING_PARKING", payload: null });
+    } catch (error: any) {
+      setSubmitError(error || "Something went wrong");
+    } finally {
+      setIsSubmiting(false);
+    }
+  }
+
+  if (!ongoingParking) {
+    return null;
+  }
+
+  const HEIGHT_ABOVE_BOTTOM_TAB = 130;
+  return (
+    <>
+      <BottomSheet
+        snapPoints={[550, 400, bottomTabHeight + HEIGHT_ABOVE_BOTTOM_TAB]}
+        initialSnap={2}
+        renderContent={() => (
+          <View
+            style={{
+              backgroundColor: theme.colors.onSurface,
+              paddingBottom: 15,
+            }}
+          >
+            <ParkingInfoView
+              theme={theme}
+              startingDate={ongoingParking?.startingDate}
+              endingDate={ongoingParking?.endingDate}
+              spot={ongoingParking?.spot}
+              onChangeEndingDate={() => {}}
+            />
+            <Button
+              loading={isSubmiting}
+              mode="contained"
+              color={Colors.green500}
+              onPress={handlePay}
+            >
+              Pay
+            </Button>
+          </View>
+        )}
+        enabledBottomClamp={true}
+        renderHeader={() => (
+          <View
+            style={[
+              styles.hintContainer,
+              { backgroundColor: theme.colors.surface },
+            ]}
+          >
+            <DragHint color={theme.colors.accent} />
+          </View>
+        )}
+      />
+
+      <Snackbar
+        visible={Boolean(submitError)}
+        onDismiss={() => setSubmitError("")}
+        action={{ label: "Ok" }}
+        duration={Infinity}
+        wrapperStyle={{ width: Window.width(100), alignSelf: "center" }}
+      >
+        {submitError}
+      </Snackbar>
+    </>
+  );
+}
+
+function ParkingInfoView({
+  theme,
+  spot,
+  startingDate,
+  endingDate,
+  onChangeEndingDate,
+}: ParkingInfoViewProps) {
+  // TODO: shared view with ParkinInfoView component in StartParkingScreen
+  const { colors } = theme;
+
+  const duration = DateUtil.diffInMinutes(startingDate, endingDate);
+
+  const price = spot?.price.amount
+    ? `$${Math.round(spot?.price.amount * (duration / 60))}`
+    : "-";
+
+  return (
+    <Surface style={{ backgroundColor: colors.onSurface }}>
+      <Header address={spot?.title || "-"} number={spot?.title || "-"} />
+
+      <View style={styles.inputsContainer}>
+        <DateTimePickerInput
+          // TODO: add disable props, Starting Date cant be edited
+          date={startingDate}
+          onChangeDate={() => {}}
+          label="Parking from"
+          style={styles.input}
+        />
+
+        <DateTimePickerInput
+          date={endingDate}
+          onChangeDate={onChangeEndingDate}
+          label="Parking until"
+          style={styles.input}
+        />
+      </View>
+
+      <ExtraInfo duration={duration} />
+      <Footer price={price} />
+    </Surface>
+  );
+}
+
+function Header({ address, number }: { address: string; number: string }) {
+  const { colors } = useTheme();
+  return (
+    <View style={[styles.headerContainer, { backgroundColor: colors.accent }]}>
+      <Text>{address}</Text>
+      <Caption>{number}</Caption>
+    </View>
+  );
+}
+
+function ExtraInfo({ duration }: { duration: number }) {
+  const { colors } = useTheme();
+  return (
+    <View
+      style={[styles.extraInfoContainer, { backgroundColor: colors.backdrop }]}
+    >
+      <Text>{duration} min</Text>
+      <Caption>Total duration</Caption>
+    </View>
+  );
+}
+
+function Footer({ price }: { price: string }) {
+  return (
+    <View style={styles.footerContainer}>
+      <Headline>Final Price</Headline>
+      <Headline>{price}</Headline>
+    </View>
+  );
+}
+
+const styles = StyleSheet.create({
+  container: {
+    borderRadius: 6,
+  },
+  headerContainer: {
+    margin: 4,
+    borderTopRightRadius: 8,
+    borderTopLeftRadius: 8,
+    minHeight: 50,
+    padding: 15,
+  },
+  inputsContainer: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    paddingHorizontal: 5,
+  },
+  input: {
+    width: 165,
+  },
+  extraInfoContainer: {
+    alignItems: "center",
+    justifyContent: "center",
+    height: 80,
+  },
+  footerContainer: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    paddingHorizontal: 15,
+    marginTop: 12,
+    marginBottom: 15,
+  },
+
+  hintContainer: {
+    shadowColor: "#000000",
+    paddingTop: 20,
+    borderTopLeftRadius: 20,
+    borderTopRightRadius: 20,
+    alignItems: "center",
+  },
+});
+
+const MockPayment = {
+  pay: function () {
+    return new Promise((resolve, reject) => {
+      setTimeout(() => {
+        if (Math.random() > 0.2) return resolve("");
+        reject("Invalid Payment");
+      }, 1000);
+    });
+  },
+};

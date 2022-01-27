@@ -18,6 +18,7 @@ import { Window } from "../../constants/Dimensions";
 import { StackScreenProps } from "@react-navigation/stack";
 import { ParkStackParamList } from "../../navigation";
 import { Values, Errors, ShowError, Refs } from "./types";
+import { Parking } from "../../services/firebase";
 
 type StartParkingScreenProps = StackScreenProps<
   ParkStackParamList,
@@ -62,18 +63,14 @@ export default function StartParkingScreen({
     setIsSnackbarVisible(false);
     setIsSubmiting(true);
     try {
-      if (user?.uid) {
-        await Firebase.createFirestoreParking(
-          user?.uid,
-          params.parkingSpot,
-          startingDate,
-          endingDate
-        );
-      } else {
-        await MockPayment.pay();
-      }
-
-      dispatch({ type: "SET_ONGOING_PARKING", payload: params.parkingSpot });
+      const userId = user?.uid || "anonymous";
+      const parking = await Firebase.createFirestoreParking(
+        userId,
+        params.parkingSpot,
+        startingDate,
+        endingDate
+      );
+      dispatch({ type: "SET_ONGOING_PARKING", payload: parking });
       navigation.navigate("MapSearch");
     } catch (error: any) {
       setSubmitError(error?.message || error || "Something went Wrong");
@@ -141,17 +138,6 @@ const styles = StyleSheet.create({
     alignSelf: "center",
   },
 });
-
-const MockPayment = {
-  pay: function () {
-    return new Promise((resolve, reject) => {
-      setTimeout(() => {
-        if (Math.random() > 0.2) return resolve("");
-        reject("Invalid Payment");
-      }, 1000);
-    });
-  },
-};
 
 function getInitialDates() {
   const now = new Date();

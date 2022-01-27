@@ -67,7 +67,7 @@ function ParkStackNavigator() {
       <ParkStack.Screen
         name="StartParking"
         component={StartParkingScreen}
-        options={{ headerShown: true }}
+        options={{ headerShown: true, headerTitle: "Park Now" }}
       />
     </ParkStack.Navigator>
   );

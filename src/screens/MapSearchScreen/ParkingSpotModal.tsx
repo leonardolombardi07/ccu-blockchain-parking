@@ -13,6 +13,7 @@ import { Window } from "../../constants/Dimensions";
 // Types
 import { StackNavigationProp } from "@react-navigation/stack";
 import { ParkStackParamList } from "../../navigation";
+import { useParking } from "../../context/parking";
 
 interface ParkingSpotModalProps {
   selectedSpot: any; // Fix this
@@ -25,7 +26,9 @@ export default function ParkingSpotModal({
   closeModal,
   navigation,
 }: ParkingSpotModalProps) {
-  const { title, price, distance, photos } = selectedSpot || {};
+  const {
+    state: { ongoingParking },
+  } = useParking();
 
   function handlePressPark() {
     if (!selectedSpot) return; // This won't happen but we should do it for typescript anyway
@@ -51,13 +54,15 @@ export default function ParkingSpotModal({
             Close
           </Button>
 
-          <Button
-            mode="contained"
-            color={Colors.green500}
-            onPress={handlePressPark}
-          >
-            Park Now
-          </Button>
+          {ongoingParking ? null : (
+            <Button
+              mode="contained"
+              color={Colors.green500}
+              onPress={handlePressPark}
+            >
+              Park Now
+            </Button>
+          )}
         </Card.Actions>
       </ParkingSpotCard>
     </Modal>

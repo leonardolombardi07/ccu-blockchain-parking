@@ -10,3 +10,6 @@ export { default as LoadingIndicator } from "./loading/LoadingIndicator";
 
 // card
 export { default as ParkingSpotCard } from "./card/ParkingSpotCard";
+
+// modal
+export { default as DragHint } from "./modal/DragHint";

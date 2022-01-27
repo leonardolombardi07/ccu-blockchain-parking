@@ -8,6 +8,8 @@ import {
   Searchbar,
 } from "react-native-paper";
 import { LoadingIndicator } from "../../components";
+// Context
+import { useParking } from "../../context/parking";
 // Hooks
 import useSearchByQuery from "./useSearchByQuery";
 // Constants
@@ -35,6 +37,9 @@ export default function SearchByQueryScreen({
     handleChangeQuery,
     findByQuery,
   } = useSearchByQuery(route.params.mapRegion);
+  const {
+    state: { ongoingParking },
+  } = useParking();
 
   return (
     <View style={styles.screenContainer}>
@@ -59,6 +64,11 @@ export default function SearchByQueryScreen({
             description={`Price: ${spot.price.amount}$ | Distance: ${spot.distance}m`}
             left={(props) => <List.Icon {...props} icon="magnify" />}
             onPress={() => {
+              if (ongoingParking) {
+                return alert(
+                  "You already have an ongoing parking. Pay for it first to enable a new parking"
+                );
+              }
               navigation.navigate("StartParking", {
                 parkingSpot: spot,
               });

@@ -46,7 +46,7 @@ export default function ParkingInfoView({
 
   const duration = DateUtil.diffInMinutes(startingDate, endingDate);
 
-  const finalPrice = spot?.price.amount
+  const price = spot?.price.amount
     ? `$${Math.round(spot?.price.amount * (duration / 60))}`
     : "-";
 
@@ -82,7 +82,7 @@ export default function ParkingInfoView({
       <HelperText type="error">{showError.spotId && errors.spotId}</HelperText>
 
       <ExtraInfo distance={`${spot?.distance}m`} duration={duration} />
-      <Footer price={finalPrice} />
+      <Footer price={price} />
     </Surface>
   );
 }
@@ -132,7 +132,7 @@ function ExtraInfo({
 function Footer({ price }: { price: string }) {
   return (
     <View style={styles.footerContainer}>
-      <Headline>Final Price</Headline>
+      <Headline>Price</Headline>
       <Headline>{price}</Headline>
     </View>
   );

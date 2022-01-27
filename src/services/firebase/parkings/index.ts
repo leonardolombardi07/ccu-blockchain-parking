@@ -7,6 +7,7 @@ import {
   where,
   setDoc,
   Timestamp,
+  getDoc,
 } from "firebase/firestore";
 import { ParkingSpot } from "../../../screens/MapSearchScreen/mockParkingApi";
 
@@ -41,7 +42,7 @@ export async function createFirestoreParking(
   spot: ParkingSpot,
   startingDate: Date,
   endingDate: Date
-) {
+): Promise<Parking> {
   const parkingDoc = getParkingDoc(uid, spot, startingDate, endingDate);
   await setDoc(parkingDoc, {
     id: getParkingPath(uid, spot, startingDate, endingDate),
@@ -50,7 +51,7 @@ export async function createFirestoreParking(
     startingDate,
     endingDate,
   } as Parking);
-  return parkingDoc;
+  return { startingDate, endingDate, spot, uid, id: parkingDoc.id };
 }
 
 function getParkingDoc(

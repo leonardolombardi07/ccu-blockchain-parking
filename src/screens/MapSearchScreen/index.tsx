@@ -9,9 +9,9 @@ import {
   IconButton,
   Paragraph,
   withTheme,
-  TouchableRipple,
 } from "react-native-paper";
 import { LoadingIndicator } from "../../components";
+import OngoingParkingModal from "./OngoingParkingModal";
 import ParkingSpotModal from "./ParkingSpotModal";
 // Hooks
 import useMap from "./useMap";
@@ -126,6 +126,8 @@ export default withTheme(function MapSearchScreen({
           onPress={focusOnUserLocation}
         />
       </View>
+
+      <OngoingParkingModal />
 
       <ParkingSpotModal
         selectedSpot={selectedSpot}

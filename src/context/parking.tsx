@@ -1,15 +1,13 @@
 import * as React from "react";
-import { ParkingSpot } from "../screens/MapSearchScreen/mockParkingApi";
-
-type ParkingStatus = "SEARCHING" | "ONGOING";
+import { Parking } from "../services/firebase";
 
 interface ParkingState {
-  ongoingParking: ParkingSpot | null;
+  ongoingParking: Parking | null;
 }
 
 type ParkingAction = {
   type: "SET_ONGOING_PARKING";
-  payload: ParkingSpot | null;
+  payload: Parking | null;
 };
 type ParkingDispatch = (action: ParkingAction) => void;
 
