@@ -29,7 +29,7 @@ export default function ParkingSpotModal({
 
   function handlePressPark() {
     if (!selectedSpot) return; // This won't happen but we should do it for typescript anyway
-    navigation.navigate("Checkout", {
+    navigation.navigate("StartParking", {
       parkingSpot: selectedSpot,
     });
   }
@@ -56,7 +56,7 @@ export default function ParkingSpotModal({
             color={Colors.green500}
             onPress={handlePressPark}
           >
-            Proceed to Checkout
+            Park Now
           </Button>
         </Card.Actions>
       </ParkingSpotCard>

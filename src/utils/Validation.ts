@@ -1,4 +1,4 @@
-type ValidationTypes = "name" | "email" | "password" | "plate";
+type ValidationTypes = "name" | "email" | "password" | "plate" | "spotId";
 
 export function validate<Types, ValueType>(
   type: ValidationTypes,
@@ -38,6 +38,14 @@ export function validate<Types, ValueType>(
         ? "Please provide a plate number"
         : !value.match(plateRegex) || value.length != 8
         ? "Please provide a valid plate number, with 8 characters"
+        : null;
+    }
+
+    case "spotId": {
+      return !value
+        ? "Please provide the id of the spot"
+        : value.length != 8
+        ? "Please provide a valid spot id, with 8 characters"
         : null;
     }
 

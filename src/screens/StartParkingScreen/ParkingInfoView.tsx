@@ -7,15 +7,23 @@ import {
   Headline,
   useTheme,
   Colors,
+  TextInput,
+  HelperText,
 } from "react-native-paper";
 import DateTimePickerInput from "../../components/input/DateTimePickerInput";
 // Utils
 import * as DateUtil from "../../utils/Date";
 // Types
 import { ParkingSpot } from "../MapSearchScreen/mockParkingApi";
+import { Values, Errors, ShowError, Refs, HandleChange } from "./types";
 
 interface ParkingInfoViewProps {
   spot: ParkingSpot | null;
+  values: Values;
+  errors: Errors;
+  showError: ShowError;
+  refs: Refs;
+  handleChange: HandleChange;
   startingDate: Date;
   onChangeStartingDate: (newDate: Date) => void;
   endingDate: Date;
@@ -24,6 +32,11 @@ interface ParkingInfoViewProps {
 
 export default function ParkingInfoView({
   spot,
+  values,
+  errors,
+  showError,
+  refs,
+  handleChange,
   startingDate,
   onChangeStartingDate,
   endingDate,
@@ -55,6 +68,18 @@ export default function ParkingInfoView({
           style={styles.input}
         />
       </View>
+
+      <TextInput
+        ref={refs.spotId}
+        label={"Spot ID"}
+        keyboardType="email-address"
+        autoCapitalize="none"
+        value={values.spotId}
+        error={showError.spotId}
+        maxLength={8}
+        onChangeText={(newSpotId) => handleChange(newSpotId, "spotId")}
+      />
+      <HelperText type="error">{showError.spotId && errors.spotId}</HelperText>
 
       <ExtraInfo distance={`${spot?.distance}m`} duration={duration} />
       <Footer price={finalPrice} />

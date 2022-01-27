@@ -59,7 +59,7 @@ export default function SearchByQueryScreen({
             description={`Price: ${spot.price.amount}$ | Distance: ${spot.distance}m`}
             left={(props) => <List.Icon {...props} icon="magnify" />}
             onPress={() => {
-              navigation.navigate("Checkout", {
+              navigation.navigate("StartParking", {
                 parkingSpot: spot,
               });
             }}

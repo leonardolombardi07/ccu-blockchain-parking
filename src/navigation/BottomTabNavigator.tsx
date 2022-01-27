@@ -5,8 +5,8 @@ import { createStackNavigator } from "@react-navigation/stack";
 // Screens
 import {
   MapSearchScreen,
-  CheckoutScreen,
   SearchByQueryScreen,
+  StartParkingScreen,
   ProfileScreen,
   MyParkingsScreen,
 } from "../screens";
@@ -65,8 +65,8 @@ function ParkStackNavigator() {
       />
 
       <ParkStack.Screen
-        name="Checkout"
-        component={CheckoutScreen}
+        name="StartParking"
+        component={StartParkingScreen}
         options={{ headerShown: true }}
       />
     </ParkStack.Navigator>

@@ -1,32 +1,49 @@
 import * as React from "react";
 // Components
-import { View, StyleSheet } from "react-native";
+import { View, TextInput as NativeTextInput, StyleSheet } from "react-native";
 import { Button, Snackbar, Colors } from "react-native-paper";
 import ParkingInfoView from "./ParkingInfoView";
 // Context
 import { useParking } from "../../context/parking";
+import { useAuth } from "../../context/auth";
 // Hooks
 import { useIsMounted } from "../../hooks";
 // Services
 import * as Firebase from "../../services/firebase";
+// Utils
+import * as Validation from "../../utils/Validation";
 // Constants
 import { Window } from "../../constants/Dimensions";
 // Types
 import { StackScreenProps } from "@react-navigation/stack";
 import { ParkStackParamList } from "../../navigation";
-import { useAuth } from "../../context/auth";
+import { Values, Errors, ShowError, Refs } from "./types";
 
-type CheckoutScreenProps = StackScreenProps<ParkStackParamList, "Checkout">;
+type StartParkingScreenProps = StackScreenProps<
+  ParkStackParamList,
+  "StartParking"
+>;
 
-export default function CheckoutScreen({
+type InputType = "spotId";
+
+export default function StartParkingScreen({
   route: { params },
   navigation,
-}: CheckoutScreenProps) {
+}: StartParkingScreenProps) {
   const isMounted = useIsMounted();
 
   const { now, oneHourLater } = getInitialDates();
   const [startingDate, setStartingDate] = React.useState(now);
   const [endingDate, setEndingDate] = React.useState(oneHourLater);
+
+  const spotIdRef = React.useRef<NativeTextInput>(null);
+  const [values, setValues] = React.useState<Values>({ spotId: "" });
+  const [errors, setErrors] = React.useState<Errors>({ spotId: "" });
+
+  function handleChange(newValue: string, type: InputType) {
+    setErrors((e) => ({ ...e, [type]: Validation.validate(type, newValue) }));
+    setValues((p) => ({ ...p, [type]: newValue }));
+  }
 
   const [isSubmiting, setIsSubmiting] = React.useState(false);
   const [hasSubmitted, setHasSubmitted] = React.useState(false);
@@ -40,6 +57,8 @@ export default function CheckoutScreen({
   async function handleSubmit() {
     setHasSubmitted(true);
     if (isSubmiting) return;
+    const spotIdError = Validation.validate("spotId", values.spotId);
+    if (spotIdError) return spotIdRef.current?.focus();
     setIsSnackbarVisible(false);
     setIsSubmiting(true);
     try {
@@ -64,9 +83,23 @@ export default function CheckoutScreen({
     }
   }
 
+  const showError = Object.fromEntries(
+    Object.entries(errors).map(([key, error]) => [
+      key,
+      Boolean(hasSubmitted && error),
+    ])
+  ) as ShowError;
+
+  const refs: Refs = { spotId: spotIdRef };
+
   return (
     <View style={styles.container}>
       <ParkingInfoView
+        values={values}
+        errors={errors}
+        showError={showError}
+        handleChange={handleChange}
+        refs={refs}
         spot={params.parkingSpot}
         startingDate={startingDate}
         onChangeStartingDate={(d) => setStartingDate(d)}
@@ -81,7 +114,7 @@ export default function CheckoutScreen({
         mode="contained"
         onPress={handleSubmit}
       >
-        Pay
+        Start Parking
       </Button>
 
       <Snackbar

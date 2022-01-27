@@ -14,7 +14,7 @@ export type BottomTabParamList = {
 
 export type ParkStackParamList = {
   MapSearch: undefined;
-  Checkout: { parkingSpot: ParkingSpot };
+  StartParking: { parkingSpot: ParkingSpot };
   SearchByQuery: { mapRegion: Region };
 };
 
