@@ -5,10 +5,12 @@ interface ParkingState {
   ongoingParking: Parking | null;
 }
 
-type ParkingAction = {
-  type: "SET_ONGOING_PARKING";
-  payload: Parking | null;
-};
+type ParkingAction =
+  | {
+      type: "SET_ONGOING_PARKING";
+      payload: Parking | null;
+    }
+  | { type: "EDIT_ONGOING_PARKING"; payload: Partial<Parking> };
 type ParkingDispatch = (action: ParkingAction) => void;
 
 interface ParkingContext {
@@ -27,6 +29,18 @@ function parkingReducer(
   switch (action.type) {
     case "SET_ONGOING_PARKING":
       return { ...state, ongoingParking: action.payload };
+
+    case "EDIT_ONGOING_PARKING": {
+      if (state.ongoingParking) {
+        return {
+          ...state,
+          ongoingParking: { ...state.ongoingParking, ...action.payload },
+        };
+      }
+    }
+
+    default:
+      return state;
   }
 }
 

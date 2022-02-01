@@ -10,14 +10,18 @@ import {
   Button,
   Colors,
   Snackbar,
+  TextInput,
 } from "react-native-paper";
 import BottomSheet from "reanimated-bottom-sheet";
 import { DragHint, DateTimePickerInput } from "../../components";
 // Context
 import { useParking } from "../../context/parking";
+// Hooks
+import { useBottomTabBarHeight } from "@react-navigation/bottom-tabs";
+// Services
+import * as Firebase from "../../services/firebase";
 // Constants
 import { Window } from "../../constants/Dimensions";
-import { useBottomTabBarHeight } from "@react-navigation/bottom-tabs";
 // Utils
 import * as DateUtil from "../../utils/Date";
 // Types
@@ -55,6 +59,24 @@ export default function OngoingParkingModal() {
     }
   }
 
+  async function handleEditEndingDate(newDate: Date) {
+    if (!ongoingParking) return;
+    const previousDate = ongoingParking?.endingDate;
+    try {
+      const editedFields = { endingDate: newDate };
+      dispatch({ type: "EDIT_ONGOING_PARKING", payload: editedFields });
+      await Firebase.editOngoingParking(ongoingParking, editedFields);
+    } catch (error) {
+      // Rollback to last version
+      // TODO: show snackbar with error and not alert
+      dispatch({
+        type: "EDIT_ONGOING_PARKING",
+        payload: { endingDate: previousDate },
+      });
+      alert("Something went wrong");
+    }
+  }
+
   if (!ongoingParking) {
     return null;
   }
@@ -77,7 +99,7 @@ export default function OngoingParkingModal() {
               startingDate={ongoingParking?.startingDate}
               endingDate={ongoingParking?.endingDate}
               spot={ongoingParking?.spot}
-              onChangeEndingDate={() => {}}
+              onChangeEndingDate={handleEditEndingDate}
             />
             <Button
               loading={isSubmiting}
@@ -136,12 +158,14 @@ function ParkingInfoView({
       <Header address={spot?.title || "-"} number={spot?.title || "-"} />
 
       <View style={styles.inputsContainer}>
-        <DateTimePickerInput
-          // TODO: add disable props, Starting Date cant be edited
-          date={startingDate}
-          onChangeDate={() => {}}
+        <TextInput
+          disabled={true}
           label="Parking from"
-          style={styles.input}
+          value={DateUtil.humanReadable(startingDate)}
+          style={[
+            { backgroundColor: "transparent", fontSize: 14 },
+            styles.input,
+          ]}
         />
 
         <DateTimePickerInput
