@@ -26,6 +26,7 @@ import { Window } from "../../constants/Dimensions";
 import * as DateUtil from "../../utils/Date";
 // Types
 import { ParkingSpot } from "../MapSearchScreen/mockParkingApi";
+import { useNavigation } from "@react-navigation/native";
 
 interface ParkingInfoViewProps {
   spot: ParkingSpot | null;
@@ -36,6 +37,9 @@ interface ParkingInfoViewProps {
 }
 
 export default function OngoingParkingModal() {
+  // TODO: fix navigation type - it is a nested navigation
+  const navigation: any = useNavigation();
+
   const theme = useTheme();
   const bottomTabHeight = useBottomTabBarHeight();
 
@@ -52,6 +56,7 @@ export default function OngoingParkingModal() {
     try {
       await MockPayment.pay();
       dispatch({ type: "SET_ONGOING_PARKING", payload: null });
+      navigation.navigate("PaymentConfirmation", { parking: ongoingParking });
     } catch (error: any) {
       setSubmitError(error || "Something went wrong");
     } finally {

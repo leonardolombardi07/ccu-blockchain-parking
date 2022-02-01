@@ -9,6 +9,7 @@ import {
   StartParkingScreen,
   ProfileScreen,
   MyParkingsScreen,
+  PaymentConfirmationScreen,
 } from "../screens";
 // Components
 import { IconButton as PaperIcon, withTheme } from "react-native-paper";

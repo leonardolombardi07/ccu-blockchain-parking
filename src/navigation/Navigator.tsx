@@ -8,7 +8,11 @@ import { createStackNavigator } from "@react-navigation/stack";
 // Components
 import BottomTabNavigator from "./BottomTabNavigator";
 // Screens
-import { SignInScreen, SignUpScreen } from "../screens";
+import {
+  PaymentConfirmationScreen,
+  SignInScreen,
+  SignUpScreen,
+} from "../screens";
 // Types
 import { MainStackParamList } from "./types";
 
@@ -34,6 +38,10 @@ export default function Navigator(props: NavigatorProps) {
         />
         <MainStack.Screen name="SignIn" component={SignInScreen} />
         <MainStack.Screen name="SignUp" component={SignUpScreen} />
+        <MainStack.Screen
+          name="PaymentConfirmation"
+          component={PaymentConfirmationScreen}
+        />
       </MainStack.Navigator>
     </NavigationContainer>
   );
