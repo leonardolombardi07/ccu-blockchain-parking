@@ -107,6 +107,7 @@ export default withTheme(function MapSearchScreen({
         />
       </TouchableOpacity>
 
+      <FindNearbySpotsButton />
       <MapView
         region={mapRegion}
         onRegionChangeComplete={handleMapChange}
@@ -126,7 +127,7 @@ export default withTheme(function MapSearchScreen({
         />
       </View>
 
-      <FindNearbySpotsButton />
+      <OngoingParkingModal />
 
       <ParkingSpotModal
         selectedSpot={selectedSpot}
@@ -135,7 +136,6 @@ export default withTheme(function MapSearchScreen({
       />
 
       <FindNearbySpotsErrorSnackbar />
-      <OngoingParkingModal />
     </View>
   );
 });
@@ -154,7 +154,7 @@ const styles = StyleSheet.create({
   map: {
     width: Window.width(100),
     height: Window.height(100),
-    zIndex: -1,
+    zIndex: -2, // Keep this number below the zIndex of FindNearbyButton
   },
   focusIcon: {
     position: "absolute",

@@ -82,9 +82,9 @@ export default function OngoingParkingModal() {
     }
   }
 
-  // if (!ongoingParking) {
-  //   return null;
-  // }
+  if (!ongoingParking) {
+    return null;
+  }
 
   const HEIGHT_ABOVE_BOTTOM_TAB = 130;
   return (
