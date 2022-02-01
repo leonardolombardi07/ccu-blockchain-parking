@@ -97,7 +97,7 @@ export default withTheme(function MapSearchScreen({
       >
         {nearbySpots.map((spot) => (
           <Marker
-            icon={require("../../assets/Marker/P4.png")}
+            icon={require("../../assets/Marker/P.png")}
             key={spot.id}
             title={spot.title}
             description={`Price: ${Math.floor(
