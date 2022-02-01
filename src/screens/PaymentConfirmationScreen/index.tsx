@@ -9,12 +9,13 @@ import {
   Button,
   Colors,
 } from "react-native-paper";
+// Hooks
+import { useNavigation } from "@react-navigation/native";
 // Utils
 import * as DateUtil from "../../utils/Date";
 // Types
 import { StackScreenProps } from "@react-navigation/stack";
 import { MainStackParamList } from "../../navigation";
-import { useNavigation } from "@react-navigation/native";
 
 export type PaymentConfirmationScreenProps = StackScreenProps<
   MainStackParamList,

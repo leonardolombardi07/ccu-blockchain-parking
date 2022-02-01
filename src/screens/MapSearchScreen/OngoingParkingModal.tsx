@@ -17,6 +17,7 @@ import { DragHint, DateTimePickerInput } from "../../components";
 // Context
 import { useParking } from "../../context/parking";
 // Hooks
+import { useNavigation } from "@react-navigation/native";
 import { useBottomTabBarHeight } from "@react-navigation/bottom-tabs";
 // Services
 import * as Firebase from "../../services/firebase";
@@ -26,7 +27,6 @@ import { Window } from "../../constants/Dimensions";
 import * as DateUtil from "../../utils/Date";
 // Types
 import { ParkingSpot } from "../MapSearchScreen/mockParkingApi";
-import { useNavigation } from "@react-navigation/native";
 
 interface ParkingInfoViewProps {
   spot: ParkingSpot | null;
