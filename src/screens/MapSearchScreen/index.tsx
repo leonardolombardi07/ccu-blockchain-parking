@@ -1,7 +1,8 @@
 import React from "react";
 // Components
 import { StatusBar, View, StyleSheet, TouchableOpacity } from "react-native";
-import MapView, { Marker } from "react-native-maps";
+import MapView from "react-native-map-clustering";
+import { Marker } from "react-native-maps";
 import {
   HelperText,
   Button,
@@ -50,27 +51,6 @@ export default withTheme(function MapSearchScreen({
     null
   );
 
-  const Markers: any = React.useCallback(
-    () =>
-      nearbySpots.map(function renderSpot(spot) {
-        return (
-          <Marker
-            key={spot.id}
-            title={spot.title}
-            description={`Price: ${Math.floor(
-              spot.price.amount
-            )}$ | Distance: ${spot.distance}m`}
-            coordinate={{
-              latitude: spot.coords.lat,
-              longitude: spot.coords.lng,
-            }}
-            onPress={() => setSelectedSpot(spot)}
-          />
-        );
-      }),
-    [nearbySpots, setSelectedSpot]
-  );
-
   if (isLoadingMap)
     return (
       <View style={styles.screenContainer}>
@@ -109,11 +89,27 @@ export default withTheme(function MapSearchScreen({
 
       <FindNearbySpotsButton />
       <MapView
+        clusterColor="#00B386"
         region={mapRegion}
         onRegionChangeComplete={handleMapChange}
         style={styles.map}
+        spiralEnabled={false}
       >
-        <Markers />
+        {nearbySpots.map((spot) => (
+          <Marker
+            icon={require("../../assets/Marker/P4.png")}
+            key={spot.id}
+            title={spot.title}
+            description={`Price: ${Math.floor(
+              spot.price.amount
+            )}$ | Distance: ${spot.distance}m`}
+            coordinate={{
+              latitude: spot.coords.lat,
+              longitude: spot.coords.lng,
+            }}
+            onPress={() => setSelectedSpot(spot)}
+          />
+        ))}
       </MapView>
 
       <View
@@ -154,6 +150,7 @@ const styles = StyleSheet.create({
   map: {
     width: Window.width(100),
     height: Window.height(100),
+    flex: 1,
     zIndex: -2, // Keep this number below the zIndex of FindNearbyButton
   },
   focusIcon: {

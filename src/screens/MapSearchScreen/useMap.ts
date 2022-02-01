@@ -1,6 +1,4 @@
 import * as React from "react";
-// Constants
-import { Window } from "../../constants/Dimensions";
 // Services
 import * as Location from "expo-location";
 // Types

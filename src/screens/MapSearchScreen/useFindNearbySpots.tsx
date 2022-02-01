@@ -2,9 +2,9 @@ import * as React from "react";
 // Components
 import { Button, Snackbar, useTheme } from "react-native-paper";
 // Types
-import { Marker, Region } from "react-native-maps";
+import { Region } from "react-native-maps";
 import { MockApi, ParkingSpot } from "./mockParkingApi";
-import { StatusBar, StyleSheet, View } from "react-native";
+import { StyleSheet, View } from "react-native";
 import { Window } from "../../constants/Dimensions";
 
 export default function useFindNearbySpots(mapRegion: Region) {
