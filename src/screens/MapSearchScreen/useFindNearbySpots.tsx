@@ -87,6 +87,7 @@ const styles = StyleSheet.create({
     position: "absolute",
     top: Window.height(50),
     width: 150,
+    zIndex: -1, // Making sure the OngoingParkingModal covers it
   },
   stick: {
     width: 3,

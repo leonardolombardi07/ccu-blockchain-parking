@@ -107,7 +107,6 @@ export default withTheme(function MapSearchScreen({
         />
       </TouchableOpacity>
 
-      <FindNearbySpotsButton />
       <MapView
         region={mapRegion}
         onRegionChangeComplete={handleMapChange}
@@ -127,7 +126,7 @@ export default withTheme(function MapSearchScreen({
         />
       </View>
 
-      <OngoingParkingModal />
+      <FindNearbySpotsButton />
 
       <ParkingSpotModal
         selectedSpot={selectedSpot}
@@ -136,6 +135,7 @@ export default withTheme(function MapSearchScreen({
       />
 
       <FindNearbySpotsErrorSnackbar />
+      <OngoingParkingModal />
     </View>
   );
 });
