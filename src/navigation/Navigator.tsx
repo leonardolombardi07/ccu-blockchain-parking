@@ -41,6 +41,7 @@ export default function Navigator(props: NavigatorProps) {
         <MainStack.Screen
           name="PaymentConfirmation"
           component={PaymentConfirmationScreen}
+          options={{ headerShown: false }}
         />
       </MainStack.Navigator>
     </NavigationContainer>
@@ -53,7 +54,7 @@ function getNavigationTheme(theme: ReactNativePaper.Theme): Theme {
     colors: {
       background: theme.colors.background,
       border: theme.colors.onSurface,
-      card: theme.colors.onSurface,
+      card: theme.colors.surface,
       primary: theme.colors.primary,
       notification: theme.colors.notification,
       text: theme.colors.text,

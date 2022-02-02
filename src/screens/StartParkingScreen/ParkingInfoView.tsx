@@ -51,7 +51,7 @@ export default function ParkingInfoView({
     : "-";
 
   return (
-    <Surface style={[styles.container, { backgroundColor: colors.onSurface }]}>
+    <Surface style={[styles.container, { backgroundColor: colors.surface }]}>
       <Header address={spot?.title || "-"} number={spot?.title || "-"} />
 
       <View style={styles.inputsContainer}>

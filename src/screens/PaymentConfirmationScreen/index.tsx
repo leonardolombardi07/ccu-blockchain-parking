@@ -102,6 +102,7 @@ const styles = StyleSheet.create({
   screenContainer: {
     flex: 1,
     alignItems: "center",
+    paddingTop: 50,
   },
   header: {
     alignItems: "center",

@@ -86,7 +86,7 @@ export default function OngoingParkingModal() {
     return null;
   }
 
-  const HEIGHT_ABOVE_BOTTOM_TAB = 130;
+  const HEIGHT_ABOVE_BOTTOM_TAB = 205;
   return (
     <>
       <BottomSheet
@@ -94,10 +94,7 @@ export default function OngoingParkingModal() {
         initialSnap={2}
         renderContent={() => (
           <View
-            style={{
-              backgroundColor: theme.colors.onSurface,
-              paddingBottom: 15,
-            }}
+            style={{ backgroundColor: theme.colors.surface, paddingBottom: 20 }}
           >
             <ParkingInfoView
               theme={theme}
@@ -124,7 +121,7 @@ export default function OngoingParkingModal() {
               { backgroundColor: theme.colors.surface },
             ]}
           >
-            <DragHint color={theme.colors.accent} />
+            <DragHint color={Colors.grey500} />
           </View>
         )}
         overflow="hidden"
@@ -160,7 +157,7 @@ function ParkingInfoView({
     : "-";
 
   return (
-    <Surface style={{ backgroundColor: colors.onSurface }}>
+    <Surface style={{ backgroundColor: colors.surface }}>
       <Header address={spot?.title || "-"} number={spot?.title || "-"} />
 
       <View style={styles.inputsContainer}>
@@ -199,10 +196,9 @@ function Header({ address, number }: { address: string; number: string }) {
 }
 
 function ExtraInfo({ duration }: { duration: number }) {
-  const { colors } = useTheme();
   return (
     <View
-      style={[styles.extraInfoContainer, { backgroundColor: colors.backdrop }]}
+      style={[styles.extraInfoContainer, { backgroundColor: Colors.grey300 }]}
     >
       <Text>{duration} min</Text>
       <Caption>Total duration</Caption>
