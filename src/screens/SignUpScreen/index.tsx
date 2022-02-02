@@ -161,7 +161,7 @@ export default function SignUpScreen({ navigation }: SignUpScreenProps) {
       <Paragraph style={{ alignSelf: "center" }}>OR</Paragraph>
       <Divider style={{ margin: 5 }} />
       <Link onPress={() => navigation.navigate("SignIn")}>
-        Go back to login
+        Click here to login
       </Link>
 
       <Snackbar

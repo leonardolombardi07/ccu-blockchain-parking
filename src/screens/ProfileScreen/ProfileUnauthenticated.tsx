@@ -25,7 +25,7 @@ export default function ProfileUnauthenticatedScreen({
         Login in to your account
       </Button>
       <Button onPress={() => navigation.navigate("SignUp")} mode="text">
-        Register
+        Create Account
       </Button>
     </View>
   );

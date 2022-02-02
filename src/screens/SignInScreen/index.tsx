@@ -70,7 +70,7 @@ export default function SignInScreen({ navigation }: SignInScreenProps) {
       });
       dispatch({ type: "SIGN_IN", payload: user });
       AuthStorage.saveUser(user);
-      navigation.goBack();
+      navigation.navigate("BottomTab");
     } catch (error: any) {
       setSubmitError(error?.message || "Something went Wrong");
       setIsSnackbarVisible(true);
@@ -126,7 +126,7 @@ export default function SignInScreen({ navigation }: SignInScreenProps) {
       <Paragraph style={{ alignSelf: "center" }}>OR</Paragraph>
       <Divider style={{ margin: 5 }} />
       <Link onPress={() => navigation.navigate("SignUp")}>
-        Click here register
+        Click here to create an account
       </Link>
 
       <Snackbar

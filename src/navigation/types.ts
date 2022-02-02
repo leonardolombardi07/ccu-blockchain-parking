@@ -1,11 +1,10 @@
-import { NavigatorScreenParams } from "@react-navigation/native";
 // Types
 import { Region } from "react-native-maps";
 import { ParkingSpot } from "../screens/MapSearchScreen/mockParkingApi";
 import { Parking } from "../services/firebase";
 
 export type MainStackParamList = {
-  BottomTab: NavigatorScreenParams<BottomTabParamList>;
+  BottomTab: undefined;
   SignIn: undefined;
   SignUp: undefined;
   PaymentConfirmation: { parking: Parking };
