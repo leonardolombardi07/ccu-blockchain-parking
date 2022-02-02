@@ -104,10 +104,9 @@ function ExtraInfo({
   distance: string;
   duration: number;
 }) {
-  const { colors } = useTheme();
   return (
     <View
-      style={[styles.extraInfoContainer, { backgroundColor: colors.backdrop }]}
+      style={[styles.extraInfoContainer, { backgroundColor: Colors.grey300 }]}
     >
       <View style={{ alignItems: "center", justifyContent: "center" }}>
         <Text>{duration} min</Text>

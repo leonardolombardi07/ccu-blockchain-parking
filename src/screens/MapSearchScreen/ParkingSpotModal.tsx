@@ -32,6 +32,7 @@ export default function ParkingSpotModal({
 
   function handlePressPark() {
     if (!selectedSpot) return; // This won't happen but we should do it for typescript anyway
+    closeModal();
     navigation.navigate("StartParking", {
       parkingSpot: selectedSpot,
     });

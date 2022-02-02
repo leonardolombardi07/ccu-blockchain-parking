@@ -97,6 +97,7 @@ export default withTheme(function MapSearchScreen({
       >
         {nearbySpots.map((spot) => (
           <Marker
+            tracksViewChanges={false}
             icon={require("../../assets/Marker/P.png")}
             key={spot.id}
             title={spot.title}
