@@ -29,6 +29,7 @@ export default function useMap() {
 
   async function updateMapRegionToCurrentUserPosition() {
     setIsLoadingUserPosition(true);
+    setFetchUserPositionError("");
     try {
       const { coords: userCoords } = await Location.getCurrentPositionAsync();
       setMapRegion({
@@ -45,8 +46,8 @@ export default function useMap() {
     }
   }
 
-  React.useEffect(function onFirstMount() {
-    updateMapRegionToCurrentUserPosition();
+  React.useEffect(function onMount() {
+    requestPermission().then(() => updateMapRegionToCurrentUserPosition());
   }, []);
 
   async function checkPermissionsAndUpdateMapRegion() {
