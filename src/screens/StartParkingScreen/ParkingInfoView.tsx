@@ -1,4 +1,6 @@
-import { StyleSheet, View } from "react-native";
+import * as React from "react";
+// Components
+import { View, Image, StyleSheet } from "react-native";
 import {
   Surface,
   Text,
@@ -9,8 +11,13 @@ import {
   Colors,
   TextInput,
   HelperText,
+  Portal,
+  Modal,
+  Button,
 } from "react-native-paper";
 import DateTimePickerInput from "../../components/input/DateTimePickerInput";
+// Constants
+import { Window } from "../../constants/Dimensions";
 // Utils
 import * as DateUtil from "../../utils/Date";
 // Types
@@ -42,6 +49,7 @@ export default function ParkingInfoView({
   endingDate,
   onChangeEndingDate,
 }: ParkingInfoViewProps) {
+  const [isHelpModalVisible, setIsHelpModalVisible] = React.useState(false);
   const { colors } = useTheme();
 
   const duration = DateUtil.diffInMinutes(startingDate, endingDate);
@@ -51,39 +59,79 @@ export default function ParkingInfoView({
     : "-";
 
   return (
-    <Surface style={[styles.container, { backgroundColor: colors.surface }]}>
-      <Header address={spot?.title || "-"} number={spot?.title || "-"} />
+    <>
+      <Surface style={[styles.container, { backgroundColor: colors.surface }]}>
+        <Header address={spot?.title || "-"} number={spot?.title || "-"} />
 
-      <View style={styles.inputsContainer}>
-        <DateTimePickerInput
-          date={startingDate}
-          onChangeDate={onChangeStartingDate}
-          label="Parking from"
-          style={styles.input}
+        <View style={styles.inputsContainer}>
+          <DateTimePickerInput
+            date={startingDate}
+            onChangeDate={onChangeStartingDate}
+            label="Parking from"
+            style={styles.input}
+          />
+          <DateTimePickerInput
+            date={endingDate}
+            onChangeDate={onChangeEndingDate}
+            label="Parking until"
+            style={styles.input}
+          />
+        </View>
+
+        <TextInput
+          ref={refs.spotId}
+          label={"Location ID"}
+          keyboardType="email-address"
+          autoCapitalize="none"
+          value={values.spotId}
+          error={showError.spotId}
+          maxLength={8}
+          right={
+            <TextInput.Icon
+              onPress={() => setIsHelpModalVisible(true)}
+              name={"help"}
+            />
+          }
+          onChangeText={(newSpotId) => handleChange(newSpotId, "spotId")}
         />
-        <DateTimePickerInput
-          date={endingDate}
-          onChangeDate={onChangeEndingDate}
-          label="Parking until"
-          style={styles.input}
-        />
-      </View>
+        <HelperText type="error">
+          {showError.spotId && errors.spotId}
+        </HelperText>
 
-      <TextInput
-        ref={refs.spotId}
-        label={"Spot ID"}
-        keyboardType="email-address"
-        autoCapitalize="none"
-        value={values.spotId}
-        error={showError.spotId}
-        maxLength={8}
-        onChangeText={(newSpotId) => handleChange(newSpotId, "spotId")}
-      />
-      <HelperText type="error">{showError.spotId && errors.spotId}</HelperText>
+        <ExtraInfo distance={`${spot?.distance}m`} duration={duration} />
+        <Footer price={price} />
+      </Surface>
 
-      <ExtraInfo distance={`${spot?.distance}m`} duration={duration} />
-      <Footer price={price} />
-    </Surface>
+      <Portal>
+        <Modal
+          visible={isHelpModalVisible}
+          onDismiss={() => setIsHelpModalVisible(false)}
+          contentContainerStyle={{ backgroundColor: "white", padding: 10 }}
+        >
+          <Headline>Location ID</Headline>
+          <Text>
+            Every car spot will have a Location ID which is unique to that spot.
+            You must fill in this ID to ensure you are parking your car in the
+            right place. The Location ID is visible on the spot, as exemplified
+            in the image below:
+          </Text>
+
+          <View style={styles.modalImageContainer}>
+            <Image
+              source={require("../../assets/LocationID/Station.jpg")}
+              style={styles.modalImage}
+            />
+          </View>
+
+          <Button
+            onPress={() => setIsHelpModalVisible(false)}
+            style={{ alignSelf: "flex-end" }}
+          >
+            Close
+          </Button>
+        </Modal>
+      </Portal>
+    </>
   );
 }
 
@@ -141,6 +189,15 @@ const styles = StyleSheet.create({
   container: {
     borderRadius: 6,
     marginTop: 10,
+  },
+  modalImageContainer: {
+    overflow: "hidden",
+    alignSelf: "center",
+    marginVertical: 10,
+  },
+  modalImage: {
+    width: Window.width(100),
+    height: 350,
   },
   headerContainer: {
     margin: 4,
