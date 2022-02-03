@@ -130,7 +130,7 @@ export default function SignUpScreen({ navigation }: SignUpScreenProps) {
         value={values.password}
         error={showError.password}
         onChangeText={(newPass) => handleChange(newPass, "password")}
-        onSubmitEditing={handleSubmit}
+        onSubmitEditing={() => plateRef.current?.focus()}
       />
       <HelperText type="error">
         {showError.password && errors.password}
@@ -144,7 +144,8 @@ export default function SignUpScreen({ navigation }: SignUpScreenProps) {
         value={values.plate}
         error={showError.plate}
         onChangeText={(newPlate) => handleChange(newPlate, "plate")}
-        onSubmitEditing={() => passwordRef.current?.focus()}
+        maxLength={8}
+        onSubmitEditing={handleSubmit}
       />
       <HelperText type="error">{showError.plate && errors.plate}</HelperText>
 

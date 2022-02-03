@@ -32,12 +32,10 @@ export function validate<Types, ValueType>(
     }
 
     case "plate": {
-      const plateRegex =
-        /^((?:[A-Z]{2}-\d{2}-\d{2})|(?:\d{2}-[A-Z]{2}-\d{2})|(?:\d{2}-\d{2}-[A-Z]{2}))$/i;
       return !value
         ? "Please provide a plate number"
-        : !value.match(plateRegex) || value.length != 8
-        ? "Please provide a valid plate number, with 8 characters"
+        : value.length != 8
+        ? "Please provide a plate number with 8 characters"
         : null;
     }
 
