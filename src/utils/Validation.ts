@@ -42,8 +42,8 @@ export function validate<Types, ValueType>(
     case "spotId": {
       return !value
         ? "Please provide the id of the spot"
-        : value.length != 8
-        ? "Please provide a valid spot id, with 8 characters"
+        : value.length != 4
+        ? "Please provide a valid spot id with at least 4 characters"
         : null;
     }
 

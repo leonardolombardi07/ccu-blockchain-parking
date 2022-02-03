@@ -55,15 +55,19 @@ export default function ParkingSpotModal({
             Close
           </Button>
 
-          {ongoingParking ? null : (
-            <Button
-              mode="contained"
-              color={Colors.green500}
-              onPress={handlePressPark}
-            >
-              Park Now
-            </Button>
-          )}
+          <Button
+            mode="contained"
+            color={Colors.green500}
+            onPress={() => {
+              if (ongoingParking)
+                return alert(
+                  "You already have an ongoing parking. Pay for it first to enable a new parking"
+                );
+              handlePressPark();
+            }}
+          >
+            Park Now
+          </Button>
         </Card.Actions>
       </ParkingSpotCard>
     </Modal>
