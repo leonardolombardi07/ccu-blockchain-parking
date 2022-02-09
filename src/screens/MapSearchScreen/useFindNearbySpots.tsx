@@ -1,11 +1,14 @@
 import * as React from "react";
 // Components
+import { StyleSheet, View } from "react-native";
 import { Button, Snackbar, useTheme } from "react-native-paper";
+// Services
+import * as Api from "../../services/api";
+// Constants
+import { Window } from "../../constants/Dimensions";
 // Types
 import { Region } from "react-native-maps";
-import { MockApi, ParkingSpot } from "./mockParkingApi";
-import { StyleSheet, View } from "react-native";
-import { Window } from "../../constants/Dimensions";
+import { ParkingSpot } from "../../types";
 
 export default function useFindNearbySpots(mapRegion: Region) {
   const theme = useTheme();
@@ -22,9 +25,7 @@ export default function useFindNearbySpots(mapRegion: Region) {
       setFindNearbySpotsError("");
       try {
         await new Promise((resolve) => setTimeout(() => resolve(""), 1000));
-        const foundSpots = await MockApi.findParkingSpotsNearbyRegion(
-          mapRegion
-        );
+        const foundSpots = await Api.findParkingSpotsNearbyRegion(mapRegion);
         setNearbySpots(foundSpots);
       } catch (error: any) {
         setFindNearbySpotsError(error || "Something went wrong");

@@ -1,5 +1,5 @@
 import * as React from "react";
-import { Parking } from "../services/firebase";
+import { Parking } from "../types";
 
 interface ParkingState {
   ongoingParking: Parking | null;

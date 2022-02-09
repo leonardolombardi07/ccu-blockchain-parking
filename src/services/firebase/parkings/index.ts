@@ -9,15 +9,7 @@ import {
   Timestamp,
   getDoc,
 } from "firebase/firestore";
-import { ParkingSpot } from "../../../screens/MapSearchScreen/mockParkingApi";
-
-export interface Parking {
-  id: string;
-  uid: string;
-  spot: ParkingSpot; // Ideally we should get only the id, but we don't have parking spots in the database
-  startingDate: Date;
-  endingDate: Date;
-}
+import { ParkingSpot, Parking } from "../../../types";
 
 const firestore = getFirestore();
 const parkings = collection(firestore, "parkings");

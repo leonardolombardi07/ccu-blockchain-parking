@@ -1,7 +1,7 @@
 // Types
 import { Region } from "react-native-maps";
-import { ParkingSpot } from "../screens/MapSearchScreen/mockParkingApi";
-import { Parking } from "../services/firebase";
+import { ParkingSpot } from "../types";
+import { Parking } from "../types";
 
 export type MainStackParamList = {
   BottomTab: undefined;

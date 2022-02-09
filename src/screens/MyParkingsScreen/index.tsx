@@ -15,7 +15,7 @@ import { useAuth } from "../../context/auth";
 // Services
 import * as Firebase from "../../services/firebase";
 // Types
-import { Parking } from "../../services/firebase";
+import { Parking } from "../../types";
 
 export default function MyParkingsScreen() {
   const { parkings, isLoading, error, fetchParkings } = useParkings();

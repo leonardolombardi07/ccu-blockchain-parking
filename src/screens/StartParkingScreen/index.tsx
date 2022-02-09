@@ -18,7 +18,6 @@ import { Window } from "../../constants/Dimensions";
 import { StackScreenProps } from "@react-navigation/stack";
 import { ParkStackParamList } from "../../navigation";
 import { Values, Errors, ShowError, Refs } from "./types";
-import { Parking } from "../../services/firebase";
 
 type StartParkingScreenProps = StackScreenProps<
   ParkStackParamList,

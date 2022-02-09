@@ -20,7 +20,7 @@ import useFindNearbySpots from "./useFindNearbySpots";
 // Constants
 import { Window } from "../../constants/Dimensions";
 // Types
-import { ParkingSpot } from "./mockParkingApi";
+import { ParkingSpot } from "../../types";
 import { StackScreenProps } from "@react-navigation/stack";
 import { ParkStackParamList } from "../../navigation";
 

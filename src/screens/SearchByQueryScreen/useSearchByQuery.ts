@@ -1,7 +1,9 @@
 import * as React from "react";
+// Services
+import * as Api from "../../services/api";
 // Types
 import { Region } from "react-native-maps";
-import { MockApi, ParkingSpot } from "../MapSearchScreen/mockParkingApi";
+import { ParkingSpot } from "../../types";
 
 export default function useSearchByQuery(mapRegion: Region) {
   const [searchQuery, setSearchQuery] = React.useState<string>("");
@@ -17,9 +19,7 @@ export default function useSearchByQuery(mapRegion: Region) {
       setFindByQueryError("");
       try {
         await new Promise((resolve) => setTimeout(() => resolve(""), 1000));
-        const foundSpots = await MockApi.findParkingSpotsNearbyRegion(
-          mapRegion
-        );
+        const foundSpots = await Api.findParkingSpotsNearbyRegion(mapRegion);
         setSearchedSpots(foundSpots);
       } catch (error: any) {
         setFindByQueryError(error || "Something went wrong");

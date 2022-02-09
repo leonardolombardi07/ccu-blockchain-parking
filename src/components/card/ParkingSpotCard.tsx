@@ -4,7 +4,7 @@ import { Card, Title, Paragraph, withTheme } from "react-native-paper";
 // Constants
 import { Window } from "../../constants/Dimensions";
 // Types
-import { ParkingSpot } from "../../screens/MapSearchScreen/mockParkingApi";
+import { ParkingSpot } from "../../types";
 
 interface ParkingSpotCardProps {
   theme: ReactNativePaper.Theme;

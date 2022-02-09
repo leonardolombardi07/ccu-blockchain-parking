@@ -21,7 +21,7 @@ import { Window } from "../../constants/Dimensions";
 // Utils
 import * as DateUtil from "../../utils/Date";
 // Types
-import { ParkingSpot } from "../MapSearchScreen/mockParkingApi";
+import { ParkingSpot } from "../../types";
 import { Values, Errors, ShowError, Refs, HandleChange } from "./types";
 
 interface ParkingInfoViewProps {
