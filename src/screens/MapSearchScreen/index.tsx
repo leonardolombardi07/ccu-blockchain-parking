@@ -89,7 +89,7 @@ export default withTheme(function MapSearchScreen({
 
       <FindNearbySpotsButton />
       <MapView
-        clusterColor="#00B386"
+        clusterColor={theme.colors.accent}
         region={mapRegion}
         onRegionChangeComplete={handleMapChange}
         style={styles.map}
