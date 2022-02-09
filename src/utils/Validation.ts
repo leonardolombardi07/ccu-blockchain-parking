@@ -43,7 +43,7 @@ export function validate<Types, ValueType>(
       return !value
         ? "Please provide the id of the spot"
         : value.length != 4
-        ? "Please provide a valid spot id with at least 4 characters"
+        ? "Please provide a valid spot id with exactly 4 numbers"
         : null;
     }
 

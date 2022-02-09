@@ -81,11 +81,10 @@ export default function ParkingInfoView({
         <TextInput
           ref={refs.spotId}
           label={"Location ID"}
-          keyboardType="email-address"
-          autoCapitalize="none"
+          keyboardType="number-pad"
           value={values.spotId}
           error={showError.spotId}
-          maxLength={8}
+          maxLength={4}
           right={
             <TextInput.Icon
               onPress={() => setIsHelpModalVisible(true)}
