@@ -19,7 +19,6 @@ import { Parking } from "../../types";
 
 export default function MyParkingsScreen() {
   const { parkings, isLoading, error, fetchParkings } = useParkings();
-  console.log(parkings);
   return (
     <View style={styles.screenContainer}>
       <FlatList
