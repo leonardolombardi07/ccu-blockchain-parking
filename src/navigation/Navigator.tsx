@@ -2,17 +2,15 @@
 import {
   NavigationContainer,
   NavigationContainerProps,
-  Theme,
+  Theme as NavigationTheme,
 } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 // Components
 import BottomTabNavigator from "./BottomTabNavigator";
 // Screens
-import {
-  PaymentConfirmationScreen,
-  SignInScreen,
-  SignUpScreen,
-} from "../screens";
+import SignInScreen from "../screens/SignInScreen";
+import SignUpScreen from "../screens/SignUpScreen";
+import PaymentConfirmationScreen from "../screens/PaymentConfirmationScreen";
 // Types
 import { MainStackParamList } from "./types";
 
@@ -48,7 +46,7 @@ export default function Navigator(props: NavigatorProps) {
   );
 }
 
-function getNavigationTheme(theme: ReactNativePaper.Theme): Theme {
+function getNavigationTheme(theme: ReactNativePaper.Theme): NavigationTheme {
   return {
     dark: false,
     colors: {

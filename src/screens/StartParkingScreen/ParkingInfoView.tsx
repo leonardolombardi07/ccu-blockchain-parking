@@ -15,7 +15,7 @@ import {
   Modal,
   Button,
 } from "react-native-paper";
-import DateTimePickerInput from "../../components/input/DateTimePickerInput";
+import { DateTimePickerInput } from "../../components";
 // Constants
 import { Window } from "../../constants/Dimensions";
 // Utils
@@ -160,14 +160,7 @@ function ExtraInfo({
         <Text>{duration} min</Text>
         <Caption>Total duration</Caption>
       </View>
-      <Divider
-        style={{
-          width: 1,
-          height: "50%",
-          backgroundColor: Colors.grey500,
-          alignSelf: "center",
-        }}
-      />
+      <Divider style={styles.verticalDivider} />
       <View style={{ alignItems: "center", justifyContent: "center" }}>
         <Text>{distance}</Text>
         <Caption>To destination</Caption>
@@ -218,6 +211,12 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-around",
     height: 80,
+  },
+  verticalDivider: {
+    width: 1,
+    height: "50%",
+    backgroundColor: Colors.grey500,
+    alignSelf: "center",
   },
   footerContainer: {
     flexDirection: "row",

@@ -3,14 +3,11 @@ import * as React from "react";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { createStackNavigator } from "@react-navigation/stack";
 // Screens
-import {
-  MapSearchScreen,
-  SearchByQueryScreen,
-  StartParkingScreen,
-  ProfileScreen,
-  MyParkingsScreen,
-  PaymentConfirmationScreen,
-} from "../screens";
+import MapSearchScreen from "../screens/MapSearchScreen";
+import SearchByQueryScreen from "../screens/SearchByQueryScreen";
+import StartParkingScreen from "../screens/StartParkingScreen";
+import ProfileScreen from "../screens/ProfileScreen";
+import MyParkingsScreen from "../screens/MyParkingsScreen";
 // Components
 import { IconButton as PaperIcon, withTheme } from "react-native-paper";
 // Types

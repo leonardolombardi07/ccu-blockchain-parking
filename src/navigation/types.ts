@@ -1,7 +1,6 @@
 // Types
 import { Region } from "react-native-maps";
-import { ParkingSpot } from "../types";
-import { Parking } from "../types";
+import { ParkingSpot, Parking } from "../types";
 
 export type MainStackParamList = {
   BottomTab: undefined;
