@@ -5,7 +5,7 @@ export default function useIsMounted() {
 
   React.useEffect(function onMount() {
     isMountedRef.current = true;
-    return function onOnmount() {
+    return function onUnmount() {
       isMountedRef.current = false;
     };
   }, []);
