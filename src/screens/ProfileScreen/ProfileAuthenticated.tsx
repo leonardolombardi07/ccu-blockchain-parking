@@ -47,12 +47,7 @@ export default function ProfileAuthenticatedScreen({
           right={(props) => <List.Icon {...props} icon="chevron-right" />}
         />
         <View style={styles.fieldsContainer}>
-          <Field
-            label="E-mail"
-            value={user?.email || "-"}
-            onEdit={() => openModal("E-mail", user?.email || "", "email")}
-            editable={false}
-          />
+          <Field label="E-mail" value={user?.email || "-"} editable={false} />
           <Field
             label="Car Plate"
             value={user?.plate || "-"}
