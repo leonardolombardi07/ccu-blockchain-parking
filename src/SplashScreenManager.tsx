@@ -1,4 +1,6 @@
 import * as React from "react";
+// Components
+import { withTheme } from "react-native-paper";
 // Hooks
 import { useAuth } from "./context/auth";
 // Navigation
@@ -7,7 +9,6 @@ import { Navigator } from "./navigation";
 import * as SplashScreen from "expo-splash-screen";
 import * as AuthStorage from "./services/storage/auth";
 import * as Firebase from "./services/firebase";
-import { withTheme } from "react-native-paper";
 
 export default withTheme(function SplashScreenManager({ theme }) {
   const { isShowingSplashScreen } = useSplashScreenWhileLoadingResources();
