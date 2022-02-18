@@ -1,13 +1,14 @@
 import * as React from "react";
 // Components
 import { View, TextInput as NativeTextInput, StyleSheet } from "react-native";
-import { Button, Snackbar, Colors } from "react-native-paper";
+import { Button, Colors } from "react-native-paper";
 import ParkingInfoView from "./ParkingInfoView";
 // Context
 import { useParking } from "../../context/parking";
 import { useAuth } from "../../context/auth";
 // Hooks
 import { useIsMounted } from "../../hooks";
+import { useSnackbar } from "../../context/snackbar";
 // Services
 import * as Firebase from "../../services/firebase";
 // Utils
@@ -47,10 +48,9 @@ export default function StartParkingScreen({
 
   const [isSubmiting, setIsSubmiting] = React.useState(false);
   const [hasSubmitted, setHasSubmitted] = React.useState(false);
-  const [submitError, setSubmitError] = React.useState<string | null>(null);
-  const [isSnackbarVisible, setIsSnackbarVisible] = React.useState(false);
 
   const { dispatch } = useParking();
+  const { dispatch: snackDispatch } = useSnackbar();
   const {
     state: { user },
   } = useAuth();
@@ -59,7 +59,8 @@ export default function StartParkingScreen({
     if (isSubmiting) return;
     const spotIdError = Validation.validate("spotId", values.spotId);
     if (spotIdError) return spotIdRef.current?.focus();
-    setIsSnackbarVisible(false);
+    snackDispatch({ type: "HIDE" });
+
     setIsSubmiting(true);
     try {
       const userId = user?.uid || "anonymous";
@@ -72,8 +73,10 @@ export default function StartParkingScreen({
       dispatch({ type: "SET_ONGOING_PARKING", payload: parking });
       navigation.navigate("MapSearch");
     } catch (error: any) {
-      setSubmitError(error?.message || error || "Something went Wrong");
-      setIsSnackbarVisible(true);
+      snackDispatch({
+        type: "SHOW",
+        payload: { message: error?.message || error || "Something went Wrong" },
+      });
     } finally {
       if (isMounted) setIsSubmiting(false);
     }
@@ -112,16 +115,6 @@ export default function StartParkingScreen({
       >
         Start Parking
       </Button>
-
-      <Snackbar
-        visible={isSnackbarVisible}
-        onDismiss={() => setIsSnackbarVisible((v) => !v)}
-        action={{ label: "Ok" }}
-        duration={Infinity}
-        wrapperStyle={{ width: Window.width(100), alignSelf: "center" }}
-      >
-        {submitError}
-      </Snackbar>
     </View>
   );
 }

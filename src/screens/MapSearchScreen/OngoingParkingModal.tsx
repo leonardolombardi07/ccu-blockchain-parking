@@ -16,6 +16,7 @@ import BottomSheet from "reanimated-bottom-sheet";
 import { DragHint, DateTimePickerInput } from "../../components";
 // Context
 import { useParking } from "../../context/parking";
+import { useSnackbar } from "../../context/snackbar";
 // Hooks
 import { useNavigation } from "@react-navigation/native";
 import { useBottomTabBarHeight } from "@react-navigation/bottom-tabs";
@@ -44,21 +45,27 @@ export default function OngoingParkingModal() {
   const bottomTabHeight = useBottomTabBarHeight();
 
   const [isSubmiting, setIsSubmiting] = React.useState(false);
-  const [submitError, setSubmitError] = React.useState("");
   const {
     state: { ongoingParking },
     dispatch,
   } = useParking();
+  const { dispatch: snackDispatch } = useSnackbar();
 
   async function handlePay() {
     setIsSubmiting(true);
-    setSubmitError("");
+    snackDispatch({ type: "HIDE" });
     try {
       await MockPayment.pay();
       dispatch({ type: "SET_ONGOING_PARKING", payload: null });
       navigation.navigate("PaymentConfirmation", { parking: ongoingParking });
     } catch (error: any) {
-      setSubmitError(error || "Something went wrong");
+      snackDispatch({
+        type: "SHOW",
+        payload: {
+          message: error?.message || "Something went wrong",
+          duration: Infinity,
+        },
+      });
     } finally {
       setIsSubmiting(false);
     }
@@ -88,55 +95,43 @@ export default function OngoingParkingModal() {
 
   const HEIGHT_ABOVE_BOTTOM_TAB = 205;
   return (
-    <>
-      <BottomSheet
-        snapPoints={[550, 400, bottomTabHeight + HEIGHT_ABOVE_BOTTOM_TAB]}
-        initialSnap={2}
-        renderContent={() => (
-          <View
-            style={{ backgroundColor: theme.colors.surface, paddingBottom: 20 }}
+    <BottomSheet
+      snapPoints={[550, 400, bottomTabHeight + HEIGHT_ABOVE_BOTTOM_TAB]}
+      initialSnap={2}
+      renderContent={() => (
+        <View
+          style={{ backgroundColor: theme.colors.surface, paddingBottom: 20 }}
+        >
+          <ParkingInfoView
+            theme={theme}
+            startingDate={ongoingParking?.startingDate}
+            endingDate={ongoingParking?.endingDate}
+            spot={ongoingParking?.spot}
+            onChangeEndingDate={handleEditEndingDate}
+          />
+          <Button
+            loading={isSubmiting}
+            mode="contained"
+            color={Colors.green500}
+            onPress={handlePay}
           >
-            <ParkingInfoView
-              theme={theme}
-              startingDate={ongoingParking?.startingDate}
-              endingDate={ongoingParking?.endingDate}
-              spot={ongoingParking?.spot}
-              onChangeEndingDate={handleEditEndingDate}
-            />
-            <Button
-              loading={isSubmiting}
-              mode="contained"
-              color={Colors.green500}
-              onPress={handlePay}
-            >
-              Pay
-            </Button>
-          </View>
-        )}
-        enabledBottomClamp={true}
-        renderHeader={() => (
-          <View
-            style={[
-              styles.hintContainer,
-              { backgroundColor: theme.colors.surface },
-            ]}
-          >
-            <DragHint color={Colors.grey500} />
-          </View>
-        )}
-        overflow="hidden"
-      />
-
-      <Snackbar
-        visible={Boolean(submitError)}
-        onDismiss={() => setSubmitError("")}
-        action={{ label: "Ok" }}
-        duration={Infinity}
-        wrapperStyle={{ width: Window.width(100), alignSelf: "center" }}
-      >
-        {submitError}
-      </Snackbar>
-    </>
+            Pay
+          </Button>
+        </View>
+      )}
+      enabledBottomClamp={true}
+      renderHeader={() => (
+        <View
+          style={[
+            styles.hintContainer,
+            { backgroundColor: theme.colors.surface },
+          ]}
+        >
+          <DragHint color={Colors.grey500} />
+        </View>
+      )}
+      overflow="hidden"
+    />
   );
 }
 

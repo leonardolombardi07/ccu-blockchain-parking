@@ -9,15 +9,13 @@ import {
   IconButton,
   Modal,
   Portal,
-  Snackbar,
 } from "react-native-paper";
 // Hooks
 import { useAuth } from "../../context/auth";
+import { useSnackbar } from "../../context/snackbar";
 // Services
 import * as ImagePicker from "expo-image-picker";
 import * as Firebase from "../../services/firebase";
-// Constants
-import { Window } from "../../constants/Dimensions";
 
 interface HeaderProps {
   theme: ReactNativePaper.Theme;
@@ -35,11 +33,11 @@ function useEditAvatarModal() {
 
 export default function Header({ theme, onEditName }: HeaderProps) {
   const { isVisible, openModal, closeModal } = useEditAvatarModal();
-  const [imagePickerError, setImagePickerError] = React.useState("");
   const {
     state: { user },
     dispatch,
   } = useAuth();
+  const { dispatch: snackDispatch } = useSnackbar();
 
   async function openCameraRoll() {
     try {
@@ -52,7 +50,10 @@ export default function Header({ theme, onEditName }: HeaderProps) {
       closeModal();
       await Firebase.editUserPhotoUrl(user?.uid || "", result.uri);
     } catch (error) {
-      setImagePickerError("Something went wrong");
+      snackDispatch({
+        type: "SHOW",
+        payload: { message: "Something went wrong" },
+      });
     }
   }
 
@@ -66,7 +67,10 @@ export default function Header({ theme, onEditName }: HeaderProps) {
       closeModal();
       await Firebase.editUserPhotoUrl(user?.uid || "", result.uri);
     } catch (error) {
-      setImagePickerError("Something went wrong");
+      snackDispatch({
+        type: "SHOW",
+        payload: { message: "Something went wrong" },
+      });
     }
   }
 
@@ -141,15 +145,6 @@ export default function Header({ theme, onEditName }: HeaderProps) {
           <Button onPress={closeModal}>Cancel</Button>
         </Modal>
       </Portal>
-
-      <Snackbar
-        visible={Boolean(imagePickerError)}
-        onDismiss={() => setImagePickerError("")}
-        action={{ label: "Ok" }}
-        wrapperStyle={{ width: Window.width(100), alignSelf: "center" }}
-      >
-        {imagePickerError}
-      </Snackbar>
     </React.Fragment>
   );
 }

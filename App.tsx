@@ -3,6 +3,7 @@ import React from "react";
 import { Provider as PaperProvider } from "react-native-paper";
 import { AuthProvider } from "./src/context/auth";
 import { ParkingProvider } from "./src/context/parking";
+import { SnackbarProvider } from "./src/context/snackbar";
 // Constants
 import { DefaultTheme as DefaultPaperTheme, Colors } from "react-native-paper";
 // Components
@@ -27,7 +28,9 @@ export default function App() {
     <AuthProvider>
       <ParkingProvider>
         <PaperProvider theme={Theme}>
-          <SplashScreenManager />
+          <SnackbarProvider>
+            <SplashScreenManager />
+          </SnackbarProvider>
         </PaperProvider>
       </ParkingProvider>
     </AuthProvider>

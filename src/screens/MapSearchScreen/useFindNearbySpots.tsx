@@ -1,7 +1,9 @@
 import * as React from "react";
 // Components
 import { StyleSheet, View } from "react-native";
-import { Button, Snackbar, useTheme } from "react-native-paper";
+import { Button, useTheme } from "react-native-paper";
+// Hooks
+import { useSnackbar } from "../../context/snackbar";
 // Services
 import * as Api from "../../services/api";
 // Constants
@@ -15,20 +17,25 @@ export default function useFindNearbySpots(mapRegion: Region) {
   const [nearbySpots, setNearbySpots] = React.useState<ParkingSpot[]>([]);
   const [isSearchingNearbySpots, setIsSearchingNearbySpots] =
     React.useState<boolean>(false);
-  const [findNearbySpotsError, setFindNearbySpotsError] =
-    React.useState<string>("");
+  const { dispatch: snackDispatch } = useSnackbar();
 
   const findNearbySpots = React.useCallback(
     async function () {
       if (isSearchingNearbySpots) return;
       setIsSearchingNearbySpots(true);
-      setFindNearbySpotsError("");
+      snackDispatch({ type: "HIDE" });
       try {
         await new Promise((resolve) => setTimeout(() => resolve(""), 1000));
         const foundSpots = await Api.findParkingSpotsNearbyRegion(mapRegion);
         setNearbySpots(foundSpots);
       } catch (error: any) {
-        setFindNearbySpotsError(error || "Something went wrong");
+        snackDispatch({
+          type: "SHOW",
+          payload: {
+            message:
+              "Something went wrong while trying to find nearby parking spots",
+          },
+        });
       } finally {
         setIsSearchingNearbySpots(false);
       }
@@ -37,7 +44,6 @@ export default function useFindNearbySpots(mapRegion: Region) {
       isSearchingNearbySpots,
       mapRegion,
       setIsSearchingNearbySpots,
-      setFindNearbySpotsError,
       setNearbySpots,
     ]
   );
@@ -61,25 +67,9 @@ export default function useFindNearbySpots(mapRegion: Region) {
     );
   }, [isSearchingNearbySpots, findNearbySpots]);
 
-  const FindNearbySpotsErrorSnackbar = React.useCallback(
-    () => (
-      <Snackbar
-        visible={Boolean(findNearbySpotsError)}
-        onDismiss={() => setFindNearbySpotsError("")}
-        action={{ label: "Ok" }}
-        duration={5000}
-        wrapperStyle={{ width: Window.width(100), alignSelf: "center" }}
-      >
-        Something went wrong while trying to find nearby parking spots
-      </Snackbar>
-    ),
-    [findNearbySpotsError, setFindNearbySpotsError]
-  );
-
   return {
     nearbySpots,
     FindNearbySpotsButton,
-    FindNearbySpotsErrorSnackbar,
   };
 }
 

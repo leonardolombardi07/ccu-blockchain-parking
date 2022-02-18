@@ -44,8 +44,7 @@ export default withTheme(function MapSearchScreen({
     focusOnUserLocation,
   } = useMap();
 
-  const { nearbySpots, FindNearbySpotsButton, FindNearbySpotsErrorSnackbar } =
-    useFindNearbySpots(mapRegion);
+  const { nearbySpots, FindNearbySpotsButton } = useFindNearbySpots(mapRegion);
 
   const [selectedSpot, setSelectedSpot] = React.useState<ParkingSpot | null>(
     null
@@ -131,8 +130,6 @@ export default withTheme(function MapSearchScreen({
         closeModal={() => setSelectedSpot(null)}
         navigation={navigation}
       />
-
-      <FindNearbySpotsErrorSnackbar />
     </View>
   );
 });

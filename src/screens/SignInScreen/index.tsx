@@ -6,18 +6,16 @@ import {
   Divider,
   HelperText,
   Paragraph,
-  Snackbar,
   TextInput,
 } from "react-native-paper";
 import { Link, PasswordInput } from "../../components";
 // Hooks
 import { useIsMounted } from "../../hooks";
 import { useAuth } from "../../context/auth";
+import { useSnackbar } from "../../context/snackbar";
 // Services
 import * as Firebase from "../../services/firebase";
 import * as AuthStorage from "../../services/storage/auth";
-// Constants
-import { Window } from "../../constants/Dimensions";
 // Utils
 import * as Validation from "../../utils/Validation";
 // Types
@@ -50,10 +48,9 @@ export default function SignInScreen({ navigation }: SignInScreenProps) {
 
   const [isSubmiting, setIsSubmiting] = React.useState(false);
   const [hasSubmitted, setHasSubmitted] = React.useState(false);
-  const [submitError, setSubmitError] = React.useState<string | null>(null);
-  const [isSnackbarVisible, setIsSnackbarVisible] = React.useState(false);
 
   const { dispatch } = useAuth();
+  const { dispatch: snackDispatch } = useSnackbar();
   async function handleSubmit() {
     setHasSubmitted(true);
     if (isSubmiting) return;
@@ -61,7 +58,7 @@ export default function SignInScreen({ navigation }: SignInScreenProps) {
     if (emailError) return emailRef.current?.focus();
     const passwordError = Validation.validate("password", values.password);
     if (passwordError) return passwordRef.current?.focus();
-    setIsSnackbarVisible(false);
+    snackDispatch({ type: "HIDE" });
     setIsSubmiting(true);
     try {
       const user = await Firebase.signIn({
@@ -72,8 +69,13 @@ export default function SignInScreen({ navigation }: SignInScreenProps) {
       AuthStorage.saveUser(user);
       navigation.navigate("BottomTab");
     } catch (error: any) {
-      setSubmitError(error?.message || "Something went Wrong");
-      setIsSnackbarVisible(true);
+      snackDispatch({
+        type: "SHOW",
+        payload: {
+          message: error?.message || "Something went Wrong",
+          duration: Infinity,
+        },
+      });
     } finally {
       if (isMounted) setIsSubmiting(false);
     }
@@ -128,16 +130,6 @@ export default function SignInScreen({ navigation }: SignInScreenProps) {
       <Link onPress={() => navigation.navigate("SignUp")}>
         Click here to create an account
       </Link>
-
-      <Snackbar
-        visible={isSnackbarVisible}
-        onDismiss={() => setIsSnackbarVisible((v) => !v)}
-        action={{ label: "Ok" }}
-        duration={Infinity}
-        wrapperStyle={{ width: Window.width(100), alignSelf: "center" }}
-      >
-        {submitError}
-      </Snackbar>
     </View>
   );
 }
