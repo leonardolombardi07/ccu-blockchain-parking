@@ -56,11 +56,7 @@ export default function DateTimePickerInput({
         return setIsDatePickerVisible(true); // to show the picker again in "time" mode
       }
       case "time": {
-        const previousDate = date;
-        const newDate = previousDate;
-        newDate.setHours(selectedDate.getHours());
-        newDate.setMinutes(selectedDate.getMinutes());
-        onChangeDate(newDate);
+        onChangeDate(selectedDate);
         setMode("date");
         return setIsDatePickerVisible(false);
       }
