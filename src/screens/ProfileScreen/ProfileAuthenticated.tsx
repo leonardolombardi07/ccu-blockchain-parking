@@ -51,7 +51,7 @@ export default function ProfileAuthenticatedScreen({
           <Field
             label="Car Plate"
             value={user?.plate || "-"}
-            onEdit={() => openModal("Car Plarte", user?.plate || "", "plate")}
+            onEdit={() => openModal("Car Plate", user?.plate || "", "plate")}
           />
         </View>
       </View>
